@@ -1,5 +1,8 @@
 {
-  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+
   "version": 2,
-  "projects": {}
+  "projects": {
+    "laser-avenue77": "apps/laser-avenue77",
+    "laser-avenue77-e2e": "apps/laser-avenue77-e2e"
+  }
 }

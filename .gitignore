@@ -37,3 +37,20 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Expo
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+
+apps/laser-avenue-e2e/artifacts
+apps/laser-avenue77-e2e/artifacts
