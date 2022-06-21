@@ -1,0 +1,34 @@
+{
+  "name": "laser-avenue77",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@expo/metro-config": "*",
+    "@expo/webpack-config": "^0.16.24",
+    "@nrwl/expo": "*",
+    "@reduxjs/toolkit": "^1.8.2",
+    "@testing-library/jest-native": "*",
+    "@testing-library/react-native": "*",
+    "expo": "*",
+    "expo-dev-client": "*",
+    "expo-splash-screen": "*",
+    "expo-status-bar": "*",
+    "expo-structured-headers": "*",
+    "expo-updates": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-screens": "*",
+    "react-native-svg": "*",
+    "react-redux": "^8.0.2"
+  },
+  "scripts": {
+    "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/laser-avenue77/",
+    "postinstall": "rm -r node_modules && cd ../../ && npm install && npx nx sync-deps laser-avenue77 && npx nx ensure-symlink laser-avenue77"
+  },
+  "devDependencies": {
+    "@types/react": "~17.0.21"
+  }
+}
