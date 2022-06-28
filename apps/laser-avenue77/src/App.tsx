@@ -49,7 +49,7 @@ import CreateTask from "./Tasks/Screens/CreateTask.js"
 import TaskFullView from "./Tasks/Screens/TaskFullView.js"
 import QuickActions from './FinalLayout/QuickActions.js'
 import {isQuickActionsOpenHandler,drawerHandler} from './FinalLayout/store-finalLayout.js'
-import searchSreen from './Search/SearchSreen.js'
+import SearchSreen from './Search/SearchSreen.js'
 import HeaderSearch from './FinalLayout/HeaderSearch.js'
 import * as FirebaseCore from 'expo-firebase-core';         
 import MyHr from './HR/screens/MyHr.js'                                   
@@ -196,7 +196,7 @@ elevation: 24,borderRadius:10}}>
           <Stack.Screen name="TasksLandingPage" component={TasksLandingPage}  options={{title:'Tasks'}} />
           <Stack.Screen name="AppointmentLandingPage" component={AppointmentLandingPage} options={{title:'Appointments'}} />
           <Stack.Screen name="calendar" component={Calendar}   />
-          <Stack.Screen name="searchSreen" component={searchSreen}   />
+          {/* <Stack.Screen name="searchSreen" component={SearchSreen}   /> */}
           <Stack.Screen name="AppointmentProviderLandingPage" component={AppointmentProviderLandingPage}   />
          {/* /* /////////////////////Billing/////////////////////////////////////// */ }
        
