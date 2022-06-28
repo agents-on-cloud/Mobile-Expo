@@ -95,7 +95,7 @@ const Stack = createNativeStackNavigator();
    shadowRadius: 16.00,
    elevation: 24,}} >
   <Icon style={{fontSize:35,color:'#1EA0BD'}} name="badge-account-horizontal"/>
-  <Text > My HR</Text>
+  <Text > My HR .</Text>
   </TouchableOpacity>
   </View>
   <View >
