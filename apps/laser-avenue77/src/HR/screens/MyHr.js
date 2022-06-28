@@ -10,7 +10,7 @@ function MyHr(params) {
     
     return(
         <View>
-<Text style={{marginTop:100,marginLeft:100}}>Besher start Write code here </Text>
+<Text style={{marginTop:100,marginLeft:100}}>Besher start Write code here ..</Text>
         </View>
     )
 
