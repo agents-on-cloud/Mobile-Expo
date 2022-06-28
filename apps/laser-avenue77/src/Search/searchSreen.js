@@ -281,48 +281,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
   }}
   </Pressable>
 </Box>
-  // <Box shadow={5} style={{borderWidth:.4,borderColor:'teal'}}>
-  // //     <Pressable onPress={() => console.log("You touched me")} _dark={{
-  //     bg: "coolGray.800"
-  //   }} _light={{
-  //     bg: "white"
-  //   }}>
-  //       {({
-  //       isHovered,
-  //       isFocused,
-  //       isPressed
-  //     }) => { return  <Box pl="4" pr="5" py="2"  bg={item.is_unread ? "coolGray.300" : isHovered ? "coolGray.200" : "coolGray.100"} style={{
-  //       transform: [{
-  //         scale: isPressed ? 1.08 : 1
-  //       }],
 
-  //     }} >
-  //         <HStack alignItems="center" space={3}>
-  //           <Avatar size="48px" source={{
-  //           uri: "https://cdn4.iconfinder.com/data/icons/professions-1-2/151/3-512.png"
-  //         }} />
-  //           <VStack>
-  //             <Text color="coolGray.800" _dark={{
-  //             color: "warmGray.50"
-  //           }} bold>
-  //               Sender Name: {item.sender_name}
-  //             </Text>
-  //             <Text color="coolGray.600" _dark={{
-  //             color: "warmGray.200"
-  //           }}>
-  //               {item.notification_subject}
-  //             </Text>
-  //           </VStack>
-  //           <Spacer />
-  //           <Text style={{position:'absolute',right:2}} fontSize="xs" color="coolGray.800" _dark={{
-  //           color: "warmGray.50"
-  //         }} alignSelf="flex-start">
-  //             {`${parseInt(item.createdAt.slice(11,16)) +3}: ${item.createdAt.slice(13,16)}` }
-  //           </Text>
-  //         </HStack>
-  //       </Box>}}
-  //     </Pressable>
-  //   </Box>;
   const renderHiddenItem = (data, rowMap) => <HStack flex="1" pl="2" >
     
 
@@ -452,9 +411,6 @@ console.log('finalArrfinalArrfinalArr',finalArr);
   </ScrollView>
 
 </View>}
-{/* <View style={{marginTop:100}}>
-  
-</View> */}
         </ScrollView>
  
    
