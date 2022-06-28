@@ -49,8 +49,8 @@ import CreateTask from "./Tasks/Screens/CreateTask.js"
 import TaskFullView from "./Tasks/Screens/TaskFullView.js"
 import QuickActions from './FinalLayout/QuickActions.js'
 import {isQuickActionsOpenHandler,drawerHandler} from './FinalLayout/store-finalLayout.js'
-import SearchSreen from './Search/SearchSreen.js'
-import HeaderSearch from './FinalLayout/HeaderSearch.js'
+// import SearchSreen from './Search/SearchSreen.js'
+// import HeaderSearch from './FinalLayout/HeaderSearch.js'
 import * as FirebaseCore from 'expo-firebase-core';         
 import MyHr from './HR/screens/MyHr.js'                                   
 const Stack = createNativeStackNavigator();
@@ -168,9 +168,9 @@ elevation: 24,borderRadius:10}}>
           <NavigationContainer ref={navigationRef}>
           <QuickActions />
           <Collaborate/>
-          {layoutSore.searchFlag==false &&layoutSore.loginFlag && <Header  drawHandler={drawer} />}
-          { <Header  drawHandler={drawer} />}
-          {layoutSore.searchFlag==true && <HeaderSearch   />}
+          {/* {layoutSore.searchFlag==false &&layoutSore.loginFlag && <Header  drawHandler={drawer} />} */}
+          {/* { <Header  drawHandler={drawer} />} */}
+          {/* {layoutSore.searchFlag==true && <HeaderSearch   />} */}
           {layoutSore.componentsLoader  && <Loader1  />}
            <Stack.Navigator  screenOptions={{headerShown: false }}>
            <Stack.Screen name="MyHr" component={MyHr} />
