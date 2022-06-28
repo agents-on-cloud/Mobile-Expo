@@ -135,7 +135,7 @@ elevation: 24,borderRadius:10}}>
  shadowRadius: 16.00,
  elevation: 24,}} >
  <Icon style={{fontSize:35,color:'#1EA0BD'}} name="logout"/>
- <Text >Logout</Text>
+ <Text >Logout .</Text>
  </TouchableOpacity> 
  </View>
  <View >
