@@ -108,7 +108,7 @@ shadowOpacity: 0.58,
 shadowRadius: 16.00,
 elevation: 24,}} >
  <Icon style={{fontSize:35,color:'#1EA0BD'}} name="kodi"/>
- <Text >Clinic HR</Text>
+ <Text >Clinic HR .</Text>
  </TouchableOpacity>}
  </View>
  <View >
