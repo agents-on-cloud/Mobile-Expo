@@ -18,13 +18,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios'
 import requestBuilder from '../../requestRebuilder  '
 import {notificationModalHandler} from "../store-dashboard"
+import {Heading} from 'native-base'
 
 
 
 
 
 const App = () => {
-    const [unReadNotification,setunReadNotification]=useState([])
+    const [unReadNotification,setunReadNotification]=useState([{notification_subject:'',createdAt:'',sender_name:''}])
     const [deleteFlag,setDeleteFlag]=useState(false)
   const dispatch = useDispatch();
   const dashboardStore = useSelector(state => state.dashboard);
@@ -53,7 +54,8 @@ let unReadNoti=[]
           if (results.data[i].is_unread) {
             unReadNoti.push(results.data[i])
           }}
-          setunReadNotification(unReadNoti)
+          // setunReadNotification([{notification_subject:'',createdAt:'',sender_name:''}])
+          setunReadNotification([...unReadNotification,...unReadNoti])
           })
     
           console.log('====================================');
@@ -63,7 +65,6 @@ let unReadNoti=[]
   }
 
   const { width: windowWidth } = useWindowDimensions();
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.scrollContainer}>
@@ -83,10 +84,11 @@ let unReadNoti=[]
           scrollEventThrottle={1}
         >
           {unReadNotification.map((item, imageIndex) => {
-            return (<View>
-                <Pressable onPress={()=>console.log('hhh')} onLongPress={()=>dispatch(notificationModalHandler())} delayLongPress={100} >
+            return (
+            <View >
+               {imageIndex !==0 && <Pressable   >
                 <View
-                  style={{  width: windowWidth * .8, height: 80,marginRight:10,marginLeft:10, borderColor:'#06919D',borderRadius:5, height: 80, padding: 20 ,backgroundColor:"#E4E4E4" }}
+                  style={{  width: windowWidth * .8, marginRight:10,marginLeft:10, borderColor:'#06919D',borderRadius:10, height: 70, padding: 10 ,backgroundColor:"#FFF6EA" }}
                   key={imageIndex}
                 >
                     <Icon onPress={()=>deleteNotification(item)} name="close" style={{position:'absolute',top:4,right:4,fontSize:15}}/>
@@ -96,14 +98,29 @@ let unReadNoti=[]
             uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
           }}
        />
- 
-                <Text bold style={{color:'black'}} > {" "}{item.sender_name.toUpperCase()}</Text>
-                <Text style={{position:'absolute',right:0,bottom:0,color:"#11567C"}}><Icon color="#11567C" name="date" />{" "} {`${parseInt(item.createdAt.slice(11,16))+3}:${item.createdAt.slice(13,16)}` }</Text>
+              {  <Text bold style={{color:'black'}} > {" "}{item.sender_name.toUpperCase()}</Text>}
+                <Text style={{position:'absolute',right:0,bottom:0,color:"#11567C"}}><Icon color="#11567C" name="date" />{" "} {`${parseInt(item.createdAt.slice(11,16))+3}${item.createdAt.slice(13,16)}` }</Text>
                 </View>
-                <Text style={{color:'#11567C',fontSize:12,paddingTop:5,position:'absolute',left:72,bottom:20}} >{item.notification_subject}</Text>
+                <Text style={{color:'#11567C',fontSize:12,paddingTop:5,position:'absolute',left:62,bottom:20}} >{item.notification_subject}</Text>
                 </View>
-                </Pressable>
-                </View>
+                </Pressable>}
+                {imageIndex ==0 && <Pressable onPress={()=>console.log('hhh')}  >
+                <View style={{width:320,height:70,backgroundColor:'#FFF6EA',borderRadius:10,shadowColor: "#000",
+        shadowOffset: {
+        width: 5,
+        height: 12,
+      },
+      shadowOpacity: 0.8,
+      shadowRadius: 16.00,
+      elevation: 20,marginLeft:30,marginRight:30}}>
+        <Image style={{position:'absolute',top:10,left:10,width:50,height:50}} source={require('../../assests/notification-bell.png')}/>
+        <View style={{width:20,height:20,borderRadius:18, backgroundColor:'red',position:'absolute',top:10,left:48}}>
+        <Heading style={{color:'white',fontSize:12,textAlign:'center',bottom:5}}> {unReadNotification.length-1} </Heading>
+        </View>
+        <Heading style={{textAlign:'center',paddingTop:20,color:'#346751'}}> Notifications</Heading>
+        </View>
+        </Pressable>}
+        </View>
             );
           })}
         </ScrollView>
@@ -115,8 +132,8 @@ let unReadNoti=[]
                 windowWidth * imageIndex,
                 windowWidth * (imageIndex + 1)
               ],
-              outputRange: [8, 16, 8],
-              extrapolate: "extend"
+              outputRange: [12, 24, 12],
+              extrapolate: "clamp"
             });
             return (
               
@@ -124,17 +141,14 @@ let unReadNoti=[]
                 key={imageIndex}
                 style={[styles.normalDot, { width }]}
               />
-       
-              
+                
             );
           })}
-        </View>
+      </View>
       </View>
       {dashboardStore.notificationModal &&<View shadow={9} style={{width:180,height:150,backgroundColor:"#EEEEEE",position:'absolute',top:-40,borderRadius:20,borderColor:"grey",borderWidth:1}}>
-
-
-</View>}
-    </SafeAreaView>
+      </View>}
+      </SafeAreaView>
   );
 }
 
@@ -175,14 +189,16 @@ borderRadius:10
     fontWeight: "bold"
   },
   normalDot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: "silver",
-    marginHorizontal: 4
+    height: 10,
+    width:10,
+    borderRadius:15,
+ 
+    backgroundColor: "white",
+    marginHorizontal: 10
   },
   indicatorContainer: {
-   width:400,
+    position:"absolute",
+    bottom:10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"

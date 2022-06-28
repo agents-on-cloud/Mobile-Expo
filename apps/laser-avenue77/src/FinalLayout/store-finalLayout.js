@@ -9,7 +9,8 @@ export const finalLayoutStore=createSlice({
         selected:0,
         openCollaborate:false,
         isQuickActionsOpen:false,
-        searchFlag:false
+        searchFlag:false,
+        drawerFlag:'locked-closed'
     },
     reducers:{
   
@@ -36,12 +37,15 @@ export const finalLayoutStore=createSlice({
     },
     HeaderSearchHandler:(state,action)=>{
         state.searchFlag = !state.searchFlag 
-    }
+    },
+    drawerHandler:(state,action)=>{
+        state.drawerFlag = 'unlocked'
+    },
     }
     
 })
 
 
 
-export const {loginFlagHandler,closeloginFlagHandler,settingsHandler,componentsLoaderHandler,selectedHandler,openCollaborateHandler,isQuickActionsOpenHandler,HeaderSearchHandler} =finalLayoutStore.actions
+export const {loginFlagHandler,closeloginFlagHandler,settingsHandler,componentsLoaderHandler,selectedHandler,openCollaborateHandler,isQuickActionsOpenHandler,HeaderSearchHandler,drawerHandler} =finalLayoutStore.actions
 export default finalLayoutStore.reducer 

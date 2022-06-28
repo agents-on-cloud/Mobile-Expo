@@ -74,6 +74,7 @@ import {openCollaborateHandler} from '../FinalLayout/store-finalLayout'
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.QrButton}
+      onPress={()=> navigation.navigate('libraryTest')}
       >
       <Icon name="qrcode"  style={styles.qrcodeIcon} />
       <Text bold style={styles.cameraIcon} >QR</Text>

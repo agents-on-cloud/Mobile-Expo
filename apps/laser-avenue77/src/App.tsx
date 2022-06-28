@@ -48,66 +48,43 @@ import { useNavigation } from '@react-navigation/native';
 import CreateTask from "./Tasks/Screens/CreateTask.js"
 import TaskFullView from "./Tasks/Screens/TaskFullView.js"
 import QuickActions from './FinalLayout/QuickActions.js'
-import {isQuickActionsOpenHandler} from './FinalLayout/store-finalLayout.js'
-import searchSreen from './Search/searchSreen.js'
+import {isQuickActionsOpenHandler,drawerHandler} from './FinalLayout/store-finalLayout.js'
+import searchSreen from './Search/SearchSreen.js'
 import HeaderSearch from './FinalLayout/HeaderSearch.js'
-import * as FirebaseCore from 'expo-firebase-core';
-
-                                                   
+import * as FirebaseCore from 'expo-firebase-core';         
+import MyHr from './HR/screens/MyHr.js'                                   
 const Stack = createNativeStackNavigator();
-async function saveTokenToDatabase(token) {
-//   Assume user is already signed in
-//   const userId = auth().currentUser.uid;
-//   Add the token to the users datastore
-//   await firestore()
-//   .collection('users')
-//   .doc(userId)
-//   .update({
-//    tokens: firestore.FieldValue.arrayUnion(token),
-//    });
-}
+
 /////////////////////////////////////////////////////
   function App() {  
+    
+    // const deviceId = Expo.Constants.deviceId;
+    const layoutSore = useSelector(state => state.finalLayoutStore);
+    const dispatch = useDispatch();
+    const [drawerState,setDrawerState] =useState('locked-closed')
     const navigationRef = useNavigationContainerRef(); 
     const drawer = useRef(null);
     const {
       isOpen,
       onToggle
     } = useDisclose();
-
-    // useEffect(() => {
-    // const deviceId = Expo.Constants.deviceId;
-    // console.log('Expo.Constants.deviceIdExpo.Constants.deviceId',Expo.Constants.deviceId);
-    // Get the device token
-    //   messaging()
-    //     .getToken()
-    //     .then(token => {
-    //     console.log('token========>',token);
-    //     });
-    //   // if(Platform.OS == 'ios') { messaging().getAPNSToken().then(token => { return saveTokenToDatabase(token); }); }
-  
-    //   return messaging().onTokenRefresh(token => {
-    //     saveTokenToDatabase(token);
-    //   });
-    // }, []);
-
-    const layoutSore = useSelector(state => state.finalLayoutStore);
     const dashboardStore = useSelector(state => state.dashboard);
-    const dispatch = useDispatch();
     const ciamStore = useSelector(state => state.ciamStore);
     const navigationView = () => {
     return(
     <View style={[styles.container, styles.navigationContainer]}>
     <View style={{position:'absolute' ,top:100}}>
-    <Avatar style={{marginLeft:80,marginBottom:20}} size="80px" source={{
+      <Center>
+    <Avatar  size="80px" source={{
       uri: 'https://cdn-icons-png.flaticon.com/512/387/387561.png'
     }} />
+    </Center>
    <Text style={{fontSize:20,color:'black'}}> {dashboardStore.userToken.firstName} {' '}{dashboardStore.userToken.middleName} {dashboardStore.userToken.lastName}</Text>
    <Text style={{fontSize:14,color:'grey',justifyContent:'center',alignItems:'center',alignContent:'center',textAlign:'center'}}> {dashboardStore.userToken.email}</Text>
    </View>
    <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'center',alignItems:'center',marginTop:190}}>
    <View >
-   <TouchableOpacity onPress={() => {navigationRef.navigate('HrProvider')
+   <TouchableOpacity onPress={() => {navigationRef.navigate('MyHr')
    drawer.current.closeDrawer()
   }} style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',borderRadius:10,alignItems:'center',margin:10, shadowColor: "#000",
    shadowOffset: {
@@ -116,9 +93,7 @@ async function saveTokenToDatabase(token) {
    },
    shadowOpacity: 0.58,
    shadowRadius: 16.00,
-   
-   elevation: 24,
-      }} >
+   elevation: 24,}} >
   <Icon style={{fontSize:35,color:'#1EA0BD'}} name="badge-account-horizontal"/>
   <Text > My HR</Text>
   </TouchableOpacity>
@@ -188,18 +163,19 @@ elevation: 24,borderRadius:10}}>
           drawerWidth={300}
           drawerPosition={"right"}
           renderNavigationView={navigationView}
+          drawerLockMode = {layoutSore.drawerFlag}
           >
           <NavigationContainer ref={navigationRef}>
           <QuickActions />
           <Collaborate/>
-         
           {layoutSore.searchFlag==false &&layoutSore.loginFlag && <Header  drawHandler={drawer} />}
+          { <Header  drawHandler={drawer} />}
           {layoutSore.searchFlag==true && <HeaderSearch   />}
-          {/* { <Header drawHandler={drawer}/>} */}
           {layoutSore.componentsLoader  && <Loader1  />}
            <Stack.Navigator  screenOptions={{headerShown: false }}>
-          {<Stack.Screen name="SignIn" component={SignIn}/>}
+           <Stack.Screen name="MyHr" component={MyHr} />
           {<Stack.Screen name="Dashboard" component={Dashboard}/>}
+          {<Stack.Screen name="SignIn" component={SignIn}/>}
           {<Stack.Screen name="libraryTest" component={libraryTest}/>}
           <Stack.Screen name="MainLandingPAge" component={MainLandiingPage} />
           <Stack.Screen name="HrManager" component={HrManager}   />
@@ -279,14 +255,13 @@ elevation: 24,borderRadius:10}}>
 
          {/* ////////////////////////////////////////////////////////////////////// */}
          {/* /////////////////////Human resources/////////////////////////////////////// */}
-           
+      
 
 
      
 
 
          {/* ////////////////////////////////////////////////////////////////////// */}
-
           </Stack.Navigator> 
           { layoutSore.componentsLoader==false &&<>
           { layoutSore.settingsFlag && < SettingsModal/>}
@@ -300,13 +275,6 @@ elevation: 24,borderRadius:10}}>
 color: "warmGray.50"
 }} />} />
 </HStack>}
-
-{/* {    <HStack  justifyContent="center">
-<IconButton bg={'#7F8487'} shadow={9} w="50" h="50" style={{position:'absolute',left:20,bottom:70}} variant="solid" borderRadius="full" size="lg" onPress={()=>dispatch(isQuickActionsOpenHandler())}  icon={<Icon  style={{fontSize:30,color:'#23C1E4'}}  name="flash-outline" color="warmGray.50" _dark={{
-color: "warmGray.50"
-}} />} />
-</HStack>} */}
-     
 </NavigationContainer>
 </DrawerLayoutAndroid>
           </>

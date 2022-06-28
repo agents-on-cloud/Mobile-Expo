@@ -2,7 +2,7 @@ import React,{useEffect,useState,useCallback} from 'react'
 import { Pressable, Text, View} from 'react-native';
 import {Box,Button,Center,HStack,VStack} from "native-base";
 // import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { PieChart } from "react-native-gifted-charts";
+// import { PieChart } from "react-native-gifted-charts";
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  '
 import Icon from '@expo/vector-icons/MaterialIcons';
@@ -101,7 +101,7 @@ async function getData() {
               {/**************************fds********vv*****************sa*************************/}
   
               {  <View  >
-              <PieChart
+              {/* <PieChart
                 strokeColor="white"
                 strokeWidth={2}
                 donut
@@ -130,7 +130,7 @@ async function getData() {
                     </View>
                   );
                 }}
-              />
+              /> */}
             </View>}
               {/*********************    Custom Legend component      **   ******************/}
             { item.name=='Expenses' ? <View>

@@ -1,46 +1,74 @@
 import React,{useEffect,useState} from 'react'
-import { Text, View, SafeAreaView,ScrollView,Pressable } from 'react-native';
+import { Text, View, SafeAreaView,ScrollView,Pressable,TouchableOpacity ,Image} from 'react-native';
 import { Button,HStack,StatusBar,Box,Heading,Avatar,Center,VStack} from "native-base";
-// import LottieView from 'lottie-react-native';
-import {  FlatList, Spacer, NativeBaseProvider } from "native-base";
+import LottieView from 'lottie-react-native';
+import {  FlatList, Spacer, NativeBaseProvider ,} from "native-base";
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  '
 import Icon from '@expo/vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import {modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler} from '../store-dashboard'
 
 
 function Appointment({navigation}) {
   const dashboardStore = useSelector(state => state.dashboard);
   const dispatch = useDispatch();
-  
-
-     useFocusEffect(
+    const [data,setData] =useState([])
+    const [appointmentData,setAppointmentData] =useState([])
+    const [test,setTest] =useState([{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'high',Consumer_Name:'Ahmad Khalil',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'},{Services_name:'اثار حب شباب'}]},{Priorty:'medium',Consumer_Name:'Sami Fathi Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'},{Services_name:'Botox 77'},{Services_name:'Filler 77'}]},{Priorty:'high',Consumer_Name:'Odai Khalifeh',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]},{Priorty:'low',Consumer_Name:'Mohammad Haroun',TimeTo:'08:30',TimeFrom:'09:00',Consumer_Image:'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png',services:[{Services_name:'استشارة اسنان اطفال'}]}  ])
+    useFocusEffect(
       React.useCallback(() => {
+        console.log('oooooooooooooooo');
         getAppointments()
       }, [])
     );
-  
+    useFocusEffect(
+      React.useCallback(() => {
+        console.log('oooooooooooooooo');
+        getAppointments()
+      }, [dashboardStore.FullViewAppFlag])
+    );
 
-    const [data,setData] =useState([])
-    const [appointmentData,setAppointmentData] =useState([])
-    const [ALLappointmentNumber,setALLappointmentNumber] =useState(0)
+    function AddPriorityColor(payload) {
+      if (payload=="low") {
+        return '#54BAB9'
+      }
+      if (payload=="high") {
+        return '#BB6464'
+      }
+      if (payload=="medium") {
+        return '#C6D57E'
+      }
+    }
 
 async function getAppointments() {
+  setAppointmentData([])
+ 
   try {
-await axios(requestBuilder( "appointments", "/appointments/getallappointmentsbyproviderid/:provider_id","get",
+await axios(requestBuilder( "appointments", "/appointments/Provider/With/Date/:id/:date","get",
           {
-            provider_id: dashboardStore.userToken.profileId,
+            id: "087a5c8-7bf9-4ce9-af24-958465fa380a",
+            date:"2022-06-27"
           }
         )
-      ).then((results)=>appontmentHandler(results));
-    
-  } catch (error) {
-    console.log('errrrore',error);
-  }
+      ).then((results)=>{
+        if (results.data.Response) {
+let appointmentSortedArr=[]
+for (let i = 0; i < results.data.Response.length; i++) {
+ 
+  
+}
 
+          setAppointmentData(results.data.Response)
+        }
+      });
+  } catch (error) {console.log('errrrore',error);}
+  if (appointmentData.length>5) {
+  dispatch(AdditionalAppointmentDataHandler(appointmentData.slice(5,appointmentData.length)))
+  }}
+function testFunction() {
 
-//  await axios('https://625fbc0892df0bc0f3397ad0.mockapi.io/Appointments').then(results=>   appontmentHandler(results))
 
 }
 function appontmentHandler(results) {
@@ -61,102 +89,134 @@ function appontmentHandler(results) {
        }
     
   }
-function hightStyle() {
-  if (ALLappointmentNumber >=5) {
-    return 760
-  }
-  if (ALLappointmentNumber ==0) {
-    return 350
-  }
-  if (ALLappointmentNumber <5 && ALLappointmentNumber>0) {
-  return  parseInt( ALLappointmentNumber)*170 
-  }
 
-  
-}
 function styleAppoint(params) {
   return {
-    backgroundColor:'#EEEEEE',
+    backgroundColor:'white',
     marginTop:110,
     width:'90%',
     marginLeft:"5%",
     marginBottom:80,
-    height:hightStyle()
+    padding: 6,
   }
   
 }
 
-  // 
     return (
     <View>
-       
         <View>
-        <Box shadow={9} style={styleAppoint()} w="90%" rounded="xl" _text={{
+        <Box  shadow={9} style={styleAppoint()} w="90%" rounded="xl" _text={{
         fontSize: "md",
         fontWeight: "medium",
         color: "warmGray.50",
-   
   }}>
-      
-      <Pressable variant="ghost"  onPress={()=>navigation.navigate('AppointmentProviderLandingPage')}>
-     <Avatar   shadow={9} bg="teal"  alignSelf="center" size="xl" style={{position:'absolute',top:-40,left:40}}  >
-     {/* <LottieView   style={{height:130}}  source={require('../../animation/appointments.json')}   /> */}
-      </Avatar>
-      </Pressable>
-     
-
+    <View>
+    <Image
+      style={{position:'absolute',top:-40,left:20,width:90,height:90,resizeMode: 'cover',shadowColor: "#000",
+      shadowOffset: {
+      width: 0,
+      height: 12,
+      },
+      shadowOpacity: 0.58,
+      shadowRadius: 16.00,
+      elevation: 24, }}
+      source={require('../../assests/app.png')} /> 
+      </View>
       <VStack space={3}  mt="100">
-       <Box>
-         <View style={{position:'absolute',top:-80,right:10}}>
+      <Box>
+      <View style={{position:'absolute',top:-80,right:10}}>
       <Center fontSize="xl"   >
       <Text style={{fontSize:14,color:'gray.200'}}>  TODAY APPOINTMENTS
       </Text>    
       </Center>
       <Center    pb="20">
       <Text style={{fontSize:30,color:'teal'}}>  
-       {ALLappointmentNumber}
+      {appointmentData.length}
+      {/* {test.length} */}
       </Text>     
       </Center>
       </View>
-      <HStack style={{marginBottom:30}}>
-      {/* {ALLappointmentNumber <=5 && ALLappointmentNumber !==0&&  <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>Next {ALLappointmentNumber} Appointments</Text>} */}
-     {/* {ALLappointmentNumber > 5 && <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>Next 5 Appointments</Text>}
+       {appointmentData.slice(0,5).map((item,index,row)=>
+   {return <Pressable onPress={()=>dispatch(fullViewAppHandler(item))}>
+  <View>
+  <Box style={{marginBottom:4,shadowColor: "#000",
+   shadowOffset: {
+   width: 0,
+   height: 12,
+   },
+   shadowOpacity: 0.58,
+   shadowRadius: 16.00,
+   elevation: 5,}}  >
+  <HStack style={{borderLeftWidth:5,borderColor:AddPriorityColor(item.Priorty), borderRadius:10,backgroundColor:'white',shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+elevation: 24,}}  h={70}  space={3} justifyContent="space-between" >
+  <Avatar size="44px" style={{marginTop:15,marginLeft:3}} source={{
+  uri: 'https://rajansood.in/wp-content/uploads/2017/06/Sakshi-Enterprises-1.png'
+  }} />
+   <VStack>
+   <Heading bold style={{color:'#346751',paddingTop:4,fontSize:14}}>
+   PN:{item.Consumer_Name}
+   </Heading>
+  {item.services.length>2 &&<Text>
+   Services: {item.services.slice(0,2).map((item,index,row)=>
+       <Text style={{fontSize:12}}>
+       {item.Services_name} 
+       {index +1 !==row.length && <Text style={{color:'red',fontSize:15}}> , </Text>}
+     </Text>
+ 
+     )}
+        {" "} <Text>...More</Text>
+  </Text>}
+ {item.services.length <=2 && <Text >
+   Services: {item.services.map((item,index,row)=>
+     <Text style={{fontSize:12}}>
+       {item.Services_name} 
+       {index +1 !==row.length && <Text style={{color:'red',fontSize:15}}> , </Text>}
+     </Text>
+     )}
+  </Text>}
+ </VStack>
+ <Spacer />
 
-     {ALLappointmentNumber ==0  && <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>No Appointments </Text>} */}
-      {/* <Button variant="ghost" bg="#d4d4d4"  onPress={()=>navigation.navigate('AppointmentProviderLandingPage')} style={{width:69 ,height:32,marginLeft:80}} shadow={1}><Text style={{fontSize:10}} >See More</Text></Button> */}
-      </HStack>
-       {appointmentData.map(item=> <Box   borderBottomWidth="1" _dark={{
-      borderColor: "gray.600"
-    }} borderColor="gray.300" pl="4" pr="5" py="2">
-            <HStack shadow={1} space={3} justifyContent="space-between" style={{height:70,paddingTop:20}}>
-              <Avatar size="48px" source={{
-          uri: item.avatarUrl
-        }} />
-                <VStack>
-                <Text style={{color:'#191A19'}}>
-                {item.fullName}
-                </Text>
-                <Text color="coolGray.600" _dark={{
-            color: "warmGray.200"
-          }}>
-               Patient Name :   {item.recentText}
-                </Text>
-              </VStack>
-              <Spacer />
-              <Icon name="calendar" style={{ position:'absolute',right:"27%"}}/>
-              <Text style={{fontSize:10 ,position:'absolute',right:0}} _dark={{
-          color: "warmGray.50"
-        }} color="coolGray.800" >
+ <Text style={{fontSize:10 ,position:'absolute',right:0,top:10}} _dark={{
+color: "warmGray.50"
+}} color="coolGray.800" >
+<Icon name="md-time-outline" style={{ position:'absolute',right:"27%"}}/>
+{" "}{item.TimeTo} To
+  {" "}<Icon name="md-time-outline" style={{ position:'absolute',right:"27%"}}/> {item.TimeFrom}{" "}{" "}{" "}
+</Text>
+</HStack>
+
+
+</Box>
+</View>
+</Pressable>
+})}
+        
+      
        
-               {" "} {item.timeStamp}
-        </Text>
-        </HStack>
-        </Box>)}
         </Box>
         </VStack>
+       
+      { appointmentData.length>5 && 
+  
+      <Pressable onPress={()=>{dispatch(modalVisibleHandler())}} 
+       style={{paddingTop:12}}>
+        <View>
+  <Text  style={{color:'blue',textDecorationLine: 'underline'}}>See More</Text>
+  </View>
+        </Pressable>
+
+      }
+      
         </Box>
         </View>
-
+   
 
     </View>
     )

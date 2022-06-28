@@ -1,6 +1,7 @@
 import { registerRootComponent } from 'expo';
 import { Provider } from 'react-redux';
 import App from './src/App';
+import {Text} from "react-native"
 import {configureStore} from '@reduxjs/toolkit'
 import billingReducer from './src/Billing/store-Billing'
 import marketingReducer from './src/Marketing/store-marketing.js'
@@ -13,7 +14,7 @@ import finalLayoutStore from "./src/FinalLayout/store-finalLayout.js"
 import CiamStore from './src/CIAM/store-CIAM'
 import hrStore from './src/HR/store-Hr.js'
 import searchStore from './src/Search/search-store.js'
-import { NativeBaseProvider,StatusBar,Box,HStack,Text} from "native-base";
+import { NativeBaseProvider,StatusBar,Box,HStack} from "native-base";
 
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
@@ -38,6 +39,7 @@ function main(params) {
     return(
         <Provider store={store} >
              <NativeBaseProvider>
+            
         <App/>
         </NativeBaseProvider>
         </Provider>

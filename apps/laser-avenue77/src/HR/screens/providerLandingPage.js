@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios'
 import requestRebuilder  from '../../requestRebuilder  '
 import {componentsLoaderHandler} from '../../FinalLayout/store-finalLayout'
-// import Geolocation from '@react-native-community/geolocation';
 import { useFocusEffect } from '@react-navigation/native';
+import * as TaskManager from "expo-task-manager";
+import * as Location from "expo-location";
+const LOCATION_TASK_NAME = "geofencing-location-task";
 
 
 function Hr({navigation}) {
@@ -22,46 +24,65 @@ function Hr({navigation}) {
   const hrStore = useSelector(state => state.hrStore);
   const [coordinates,setCoordinates]=useState({})
   const dispatch = useDispatch();
+  const region: Location.LocationRegion = {
+    identifier: "1",
+    latitude: 31.971192708378638,
+    longitude: 35.835082484470185,
+    radius: 30,
+  };
 
   useFocusEffect(
   React.useCallback(() => {
+// console.log('LocationLocation',Location.LocationGeofencingEventType);
   DateAndTimeHandler()
   getData()
   checkinhHandler()
-
-       
-  // Geolocation.getCurrentPosition(info=>setCoordinates({lat:info.coords.latitude,long:info.coords.longitude})  )
-
+  requestPermissions()
     }, []));
-  //  Geolocation.watchPosition(success);
-  // useEffect(() => {
-    
-  //   Geolocation.watchPosition(success);
-  // }, [coordinates])
-  
-  function success(pos) {
-    console.log('qqqq  qqqqq',pos);
-    setCoordinates({lat:pos.coords.latitude,long:pos.coords.longitude})
 
-    
-  }
 
-function error(payload) {
-  console.log('payloadpayload',payload);
-  
-}
+
+    const requestPermissions = async () => {
+      try {
+        const eventType: Location.LocationGeofencingEventType = data.eventType;
+        console.log('uueeeeuuuuu',eventType);
+      } catch (error) {
+        console.log('uuuuuuu',error);
+      }
+ 
+      console.log('aaaaaaaaaaa',eventType);
+      const { status } = await Location.requestBackgroundPermissionsAsync();
+      console.log('testtesttest',status);
+      if (status === "granted") {
+       const test= await Location.startGeofencingAsync(LOCATION_TASK_NAME, [region]);
+       console.log('testtesttest',test);
+      }
+   
+    };
+    TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }: any) => {
+      console.log('ooooooooooo');
+      const eventType: Location.LocationGeofencingEventType = data.eventType;
+      const region: Location.LocationRegion = data.region;
+      if (error) {
+        console.log(error.message);
+        return;
+      }
+    
+      if (eventType === Location.LocationGeofencingEventType.Enter) {
+        console.log("You've entered region:", region);
+      } else if (eventType === Location.LocationGeofencingEventType.Exit) {
+        console.log("You've left region:", region);
+      }
+    });
+
     function DateAndTimeHandler() {
-
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let d=new Date()
     var dayName = days[d.getDay()].toLocaleLowerCase();
     setToday(dayName)
     return `${d.getHours()}:${d.getMinutes()}`
    }
-
   async function getData() {
-
-
     dispatch(componentsLoaderHandler())
     await axios(requestRebuilder('hr','/getAllWorkingHours','post',{
       "providerUuid": tokenStore.userToken.userId,
@@ -70,22 +91,14 @@ function error(payload) {
      dispatch(componentsLoaderHandler())
   }
 
-
-
   async function checkinhHandler() {
-  
     await axios(requestRebuilder('hr','/getAllTimeAttendance','post',{
       "providerUuid": tokenStore.userToken.userId,
       "date":hrStore.dueDate
       // tokenStore.userToken.profileId
       // dueDate
-     
   })).then(results=>enableDisableHandler(results))
   }
-
-
-
-
 
  function enableDisableHandler(results) {
   setTest(results.data)
@@ -99,21 +112,10 @@ function error(payload) {
  if (results.data[results.data.length-1].checkOut !=='null') {
   setCheckOutFlag(true)
  }
-
       setCheckInFlag(true)
     }else{
       setCheckInFlag(false)
-    }
- 
-    
-  
-
-
-
-  
-}
-
-
+    }}
   async function checkOutHandler() {
     setCheckOutNew(DateAndTimeHandler())
     setCheckOutFlag(true)
@@ -123,24 +125,19 @@ function error(payload) {
        setCheckOutNew(DateAndTimeHandler())
        setCheckOutFlag(true)
       })}
-
-
  async function checkInHandler() {
       await axios(requestRebuilder('hr','/checkInClicked','post',{
       "providerUuid": tokenStore.userToken.userId,
       "providerName": tokenStore.userToken.name,
       "ProviderId": tokenStore.userToken.userId})).then((results)=>{
-    
         setCheckInNew(DateAndTimeHandler())
         setCheckInFlag(true)
       })
     
     }
-  
     return (
       <ScrollView>
-
-    <Center  flex={1} px="3">
+     <Center  flex={1} px="3">
       <Pressable>
       {({
       isHovered,
@@ -187,28 +184,22 @@ function error(payload) {
           
             </HStack>}
             {/* ///////////////////////////////////////////////////////////////////////////////////////////////// */}
-            
+
             {checkInFlag &&   <HStack>
             <Text bold style={{color:'teal'}} pl="6" mt="2" fontSize="sm" color="coolGray.700">{CheckInNew}</Text>
             <Text pl="5" mt="2" fontSize="sm" color="coolGray.700">to</Text>
             {CheckOutNew !=="NaN:undefined" &&<Text bold style={{color:'teal'}} pl="6" mt="2" fontSize="sm" color="coolGray.700">{CheckOutNew}</Text>}
             {CheckOutNew=="NaN:undefined"   &&<Text bold style={{color:'teal'}} pl="6" mt="2" fontSize="sm" color="coolGray.700">_____</Text>}
             </HStack>}
-            
-           
-             </HStack>
-             <HStack space={6} pt="10"  w="300"  justifyContent="center" alignItems="center">
-           
+            </HStack>
+            <HStack space={6} pt="10"  w="300"  justifyContent="center" alignItems="center">
            {<Button  disabled={checkInFlag}  colorScheme={checkInFlag?'light' :"primary"}   onPress={ ()=> checkInHandler()} > Check in </Button>}
            {<Button disabled={checkOutFlag} colorScheme={checkOutFlag?'light' :"primary"}  onPress={ ()=> checkOutHandler()} >Check out</Button>}
-         
             </HStack>
             <Flex>
-              {isFocused ? <Text mt="2" fontSize={12} fontWeight="medium" textDecorationLine="underline" color="darkBlue.600" alignSelf="flex-start">
-                  
-                </Text> : <Text mt="2" fontSize={12} fontWeight="medium" color="darkBlue.600">
-                 
-                </Text>}
+            {isFocused ? <Text mt="2" fontSize={12} fontWeight="medium" textDecorationLine="underline" color="darkBlue.600" alignSelf="flex-start">
+            </Text> : <Text mt="2" fontSize={12} fontWeight="medium" color="darkBlue.600">
+            </Text>}
             </Flex> 
           </Box>
           </View>)
@@ -226,4 +217,4 @@ function error(payload) {
     );
   }
   export default Hr
-  ///  ////
+/////////////////////////////////////////

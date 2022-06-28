@@ -1,5 +1,5 @@
 
-import { BarChart } from "react-native-gifted-charts";
+// import { BarChart } from "react-native-gifted-charts";
 import React from 'react';
 import {View} from 'react-native';
 import {Center} from 'native-base'
@@ -45,7 +45,7 @@ const BarThreeD = () => {
   return (
     <View>
   <View style={{marginLeft:20,marginBottom:100}}>
-      <BarChart
+      {/* <BarChart
         showFractionalValue
         showYAxisIndices
         hideRules
@@ -56,7 +56,7 @@ const BarThreeD = () => {
         sideWidth={15}
         isThreeD
         side="right"
-      />
+      /> */}
       </View>
 
     </View>

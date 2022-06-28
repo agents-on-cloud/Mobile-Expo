@@ -16,7 +16,7 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useSelector } from 'react-redux';
-// import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import Icon from '@expo/vector-icons/FontAwesome';
 import axios from 'axios';
 import { requestBuilder } from '../requestBuilder';
@@ -109,21 +109,21 @@ export default function CreateTask({ navigation }) {
   };
 
   const showDate = () => {
-    // DateTimePickerAndroid.open({
-    //   value: date,
-    //   onChange,
-    //   mode: 'date',
-    //   minimumDate: new Date(),
-    // });
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: 'date',
+      minimumDate: new Date(),
+    });
   };
 
   const showTime = () => {
-    // DateTimePickerAndroid.open({
-    //   value: date,
-    //   onChange: onChangeTime,
-    //   mode: 'time',
-    //   is24Hour: false,
-    // });
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange: onChangeTime,
+      mode: 'time',
+      is24Hour: false,
+    });
   };
 
   ///////////////////////////////////////////////////
