@@ -4,9 +4,9 @@
     "slug": "laser-avenue77",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/finallogo.png",
+    "icon": "./assets/laserLogo.png",
     "splash": {
-      "image": "./assets/finallogo.png",
+      "image": "./assets/laserLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
