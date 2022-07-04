@@ -5,8 +5,7 @@ function ConsumersLandingPage() {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text style={{fontSize:40}}>Consumers</Text>
       <Text style={{fontSize:20}}>start Development Here</Text>
-     
-    </View>
+      </View>
     );
   }
   export default ConsumersLandingPage

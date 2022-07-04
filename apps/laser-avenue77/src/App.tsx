@@ -1,5 +1,5 @@
 import  React,{useState,useEffect} from 'react';
-import { LogBox } from 'react-native';
+import { ImageBackground, LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 import MarketingLandingPage from './Marketing/Screens/MarketingLandingPage';
@@ -26,7 +26,6 @@ import SignIn from './CIAM/screens/Signin.js'
 import { useDispatch, useSelector } from 'react-redux';
 import SignUp from './CIAM/screens/Signup.js'
 import ForgetPassword from './CIAM/screens/forgetPassword.js'
-import SettingsModal from './FinalLayout/SettingsModal.js'
 import OttpModel from './CIAM/screens/ottpModel'
 import HrProvider from './HR/screens/providerLandingPage.js'
 import HrManager from './HR/screens/managerProvider.js'
@@ -36,122 +35,122 @@ import AppointmentProviderLandingPage from './Appointment/Screens/AppointmentPro
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import createNotification from './Notification/Screens/createNotification'
-import messaging from '@react-native-firebase/messaging';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { useRef } from "react";
-import { Button, DrawerLayoutAndroid, Text, StyleSheet, View,TouchableOpacity } from "react-native";
-import { Box, useDisclose, IconButton, Stagger, HStack, Center, NativeBaseProvider,Avatar } from "native-base";
+import { Button, DrawerLayoutAndroid, Text, StyleSheet, View,TouchableOpacity,Image } from "react-native";
+import {  useDisclose, IconButton, HStack, Center, NativeBaseProvider,Avatar } from "native-base";
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Collaborate from './FinalLayout/collobrate.js'
-import { useNavigation } from '@react-navigation/native';
 import CreateTask from "./Tasks/Screens/CreateTask.js"
 import TaskFullView from "./Tasks/Screens/TaskFullView.js"
 import QuickActions from './FinalLayout/QuickActions.js'
 import {isQuickActionsOpenHandler,drawerHandler} from './FinalLayout/store-finalLayout.js'
 import SearchSreen from './Search/SearchSreen.js'
-import HeaderSearch from './FinalLayout/HeaderSearch.js'
-import * as FirebaseCore from 'expo-firebase-core';         
+import HeaderSearch from './FinalLayout/HeaderSearch.js'     
 import MyHr from './HR/screens/MyHr.js'                                   
 const Stack = createNativeStackNavigator();
 
 /////////////////////////////////////////////////////
   function App() {  
-    
-    // const deviceId = Expo.Constants.deviceId;
+
+    const searchStore = useSelector(state => state.searchStore);
     const layoutSore = useSelector(state => state.finalLayoutStore);
+    useEffect(() => {
+      console.log('ppppppppp',layoutSore.searchFlag);
+     
+    }, [layoutSore.searchFlag])
     const dispatch = useDispatch();
     const [drawerState,setDrawerState] =useState('locked-closed')
     const navigationRef = useNavigationContainerRef(); 
     const drawer = useRef(null);
-    const {
-      isOpen,
-      onToggle
-    } = useDisclose();
     const dashboardStore = useSelector(state => state.dashboard);
     const ciamStore = useSelector(state => state.ciamStore);
     const navigationView = () => {
     return(
     <View style={[styles.container, styles.navigationContainer]}>
-    <View style={{position:'absolute' ,top:100}}>
-      <Center>
+
+   
+    <View style={{width:'100%',height:'30%',position:'absolute', top:20,  flex: 1,
+      alignItems: "center",
+      justifyContent: "center",}}>
+           <ImageBackground imageStyle={ styles.image} style={styles.imgBackgRound}  source={require('./assests/HeaderBackground.png')} resizeMode="cover">
+    <Center mt={50}>
+      
     <Avatar  size="80px" source={{
       uri: 'https://cdn-icons-png.flaticon.com/512/387/387561.png'
     }} />
-    </Center>
-   <Text style={{fontSize:20,color:'black'}}> {dashboardStore.userToken.firstName} {' '}{dashboardStore.userToken.middleName} {dashboardStore.userToken.lastName}</Text>
-   <Text style={{fontSize:14,color:'grey',justifyContent:'center',alignItems:'center',alignContent:'center',textAlign:'center'}}> {dashboardStore.userToken.email}</Text>
+   </Center>
+   <Center>
+   <View style={{width:'90%',height:1,backgroundColor:'white',marginTop:10}}></View>
+   <Text style={{fontSize:20,color:'white',marginTop:10}}> {dashboardStore.userToken.firstName} {' '}{dashboardStore.userToken.middleName} {dashboardStore.userToken.lastName}</Text>
+   </Center>
+   {/* <Text style={{fontSize:14,color:'grey',justifyContent:'center',alignItems:'center',alignContent:'center',textAlign:'center'}}> {dashboardStore.userToken.email}</Text> */}
+   </ImageBackground>
    </View>
-   <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'center',alignItems:'center',marginTop:190}}>
+
+
+
+   <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'center',alignItems:'center',marginTop:200}}>
    <View >
-   <TouchableOpacity onPress={() => {navigationRef.navigate('MyHr')
+   <TouchableOpacity onPress={() => { console.log('yyy')
+   
    drawer.current.closeDrawer()
-  }} style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',borderRadius:10,alignItems:'center',margin:10, shadowColor: "#000",
-   shadowOffset: {
-   width: 0,
-   height: 12,
-   },
-   shadowOpacity: 0.58,
-   shadowRadius: 16.00,
-   elevation: 24,}} >
-  <Icon style={{fontSize:35,color:'#1EA0BD'}} name="badge-account-horizontal"/>
-  <Text > My HR .</Text>
+  }} style={styles.DrawerWidgets} >
+
+<Image style={{width:50,height:50}}  source={require('./assests/ssssssssssss.png')} />
+  <Text > My Activity</Text>
   </TouchableOpacity>
   </View>
   <View >
-{ dashboardStore.userToken.profileType?.toLowerCase() =="manager" && <TouchableOpacity style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',borderRadius:10,alignItems:'center',margin:10,  shadowColor: "#000",
-shadowOffset: {
-width: 0,
-height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
-elevation: 24,}} >
+{ dashboardStore.userToken.profileType?.toLowerCase() =="manager" && <TouchableOpacity style={styles.DrawerWidgets} >
  <Icon style={{fontSize:35,color:'#1EA0BD'}} name="kodi"/>
  <Text >Clinic HR</Text>
  </TouchableOpacity>}
  </View>
  <View >
- <TouchableOpacity style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',alignItems:'center',margin:10,  shadowColor: "#000",
-shadowOffset: {
-width: 0,
-height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
-elevation: 24,borderRadius:10}}>
- <Icon style={{fontSize:35,color:'#1EA0BD'}} name="clipboard-text-multiple-outline"/>
- <Text >Activity</Text>
+ <TouchableOpacity onPress={() => {navigationRef.navigate('MyHr') ; drawer.current.closeDrawer()}} style={styles.DrawerWidgets}>
+ <Image style={{width:50,height:50}}  source={require('./assests/tasksmedical.png')} />
+ <Text >My HR</Text>
  </TouchableOpacity >
  </View>
+ <View style={{width:'80%',height:.8,backgroundColor:'grey',margin:15}}></View>
  <View >
- <TouchableOpacity onPress={() => {navigationRef.navigate('SignIn')
- drawer.current.closeDrawer()}}  style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',alignItems:'center',margin:10,borderRadius:10,shadowColor: "#000",
- shadowOffset: {
- width: 0,
- height: 12,
- },
- shadowOpacity: 0.58,
- shadowRadius: 16.00,
- elevation: 24,}} >
- <Icon style={{fontSize:35,color:'#1EA0BD'}} name="logout"/>
- <Text >Logout</Text>
+ <TouchableOpacity onPress={() => {navigationRef.navigate('TasksLandingPage')
+ drawer.current.closeDrawer()}}  style={styles.DrawerWidgets} >
+ <Image style={{width:50,height:50}}  source={require('./assests/tasksss.png')} />
+ <Text >Tasks</Text>
  </TouchableOpacity> 
  </View>
  <View >
- <TouchableOpacity onPress={() => {navigationRef.navigate('SignIn')
- drawer.current.closeDrawer()}}  style={{width:100,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',alignItems:'center',margin:10,borderRadius:10,shadowColor: "#000",
- shadowOffset: {
- width: 0,
- height: 12,
- },
- shadowOpacity: 0.58,
- shadowRadius: 16.00,
- elevation: 24,}} >
- <Icon style={{fontSize:35,color:'#1EA0BD'}} name="cog-outline"/>
- <Text >Settings</Text>
+ <TouchableOpacity onPress={() => {navigationRef.navigate('test')
+ drawer.current.closeDrawer()}}  style={styles.DrawerWidgets} >
+  <Image style={{width:50,height:50}}  source={require('./assests/hytergtrry.png')} />
+ <Text >Notifications</Text>
  </TouchableOpacity>
  </View>
+ <View style={{width:'80%',height:1,backgroundColor:'grey',margin:15}}></View>
+ <View >
+ <TouchableOpacity onPress={() => {console.log('ppppp');
+ 
+ drawer.current.closeDrawer()}}  style={styles.DrawerWidgets} >
+     <Image style={{width:50,height:50}}  source={require('./assests/blue-settings-icon-12.jpg')} />
+ <Text >Settings</Text>
+ </TouchableOpacity> 
+ </View>
+ <View >
+ <TouchableOpacity onPress={() => {console.log('ppppp');
+ drawer.current.closeDrawer()}}  style={styles.DrawerWidgets} >
+  <Image style={{width:50,height:50}}  source={require('./assests/warning-icon-png-13.png')} />
+ <Text >Incident</Text>
+ </TouchableOpacity> 
+ </View>
+ </View>
+ <View style={{width:'80%',height:.5,backgroundColor:'grey',margin:15,}}></View>
+ <View >
+ <TouchableOpacity onPress={() => {navigationRef.navigate('SignIn')
+ drawer.current.closeDrawer()}}  style={styles.logoutBtn} >
+ <Icon style={{fontSize:35,color:'#1EA0BD'}} name="logout"/>
+ <Text >Logout</Text>
+ </TouchableOpacity> 
  </View>
  </View>
      )}
@@ -163,19 +162,18 @@ elevation: 24,borderRadius:10}}>
           drawerWidth={300}
           drawerPosition={"right"}
           renderNavigationView={navigationView}
-          drawerLockMode = {layoutSore.drawerFlag}
-          >
+          drawerLockMode = {layoutSore.drawerFlag}>
           <NavigationContainer ref={navigationRef}>
           <QuickActions />
           <Collaborate/>
           {layoutSore.searchFlag==false &&layoutSore.loginFlag && <Header  drawHandler={drawer} />}
-          { <Header  drawHandler={drawer} />}
+          {/* <Header  drawHandler={drawer} /> */}
           {layoutSore.searchFlag==true && <HeaderSearch   />}
-          {layoutSore.componentsLoader  && <Loader1  />}
-           <Stack.Navigator  screenOptions={{headerShown: false }}>
-           <Stack.Screen name="MyHr" component={MyHr} />
-          {<Stack.Screen name="Dashboard" component={Dashboard}/>}
+          {layoutSore.componentsLoader  && <Loader1 />}
+          <Stack.Navigator  screenOptions={{headerShown: false }}>
           {<Stack.Screen name="SignIn" component={SignIn}/>}
+          {<Stack.Screen name="Dashboard" component={Dashboard}/>}
+          <Stack.Screen name="MyHr" component={MyHr} />
           {<Stack.Screen name="libraryTest" component={libraryTest}/>}
           <Stack.Screen name="MainLandingPAge" component={MainLandiingPage} />
           <Stack.Screen name="HrManager" component={HrManager}   />
@@ -198,12 +196,9 @@ elevation: 24,borderRadius:10}}>
           <Stack.Screen name="calendar" component={Calendar}   />
           <Stack.Screen name="searchSreen" component={SearchSreen}   />
           <Stack.Screen name="AppointmentProviderLandingPage" component={AppointmentProviderLandingPage}   />
+
          {/* /* /////////////////////Billing/////////////////////////////////////// */ }
        
-
-
-
-
 
 
          {/* //////////////////////////////////////////////////////////////////// */}
@@ -213,25 +208,13 @@ elevation: 24,borderRadius:10}}>
 
 
 
-
-
-
-
          {/* /////////////////////////////////////////////////////////////////////// */}
          {/* /////////////////////Appointment/////////////////////////////////////// */}
 
 
 
-
-
-
-
          {/* //////////////////////////////////////////////////////////////////// */}
          {/* /////////////////////Provider/////////////////////////////////////// */}
-
-
-
-
 
 
 
@@ -243,14 +226,9 @@ elevation: 24,borderRadius:10}}>
 
 
 
-
-
          {/* //////////////////////////////////////////////////////////////////// /*/}
          {/* /////////////////////Marketing/////////////////////////////////////// */}
          <Stack.Screen name="increment" component={Increment} />
-
-
-     
 
 
          {/* ////////////////////////////////////////////////////////////////////// */}
@@ -258,57 +236,82 @@ elevation: 24,borderRadius:10}}>
       
 
 
-     
-
-
          {/* ////////////////////////////////////////////////////////////////////// */}
           </Stack.Navigator> 
           { layoutSore.componentsLoader==false &&<>
-          { layoutSore.settingsFlag && < SettingsModal/>}
-          { ciamStore.ottpFlag && < OttpModel/>}
-       {/* <View style={{marginBottom:50}}></View> */}
+          { ciamStore.ottpFlag && < OttpModel/>}</>}
+          <View style={{width:10,  height:100,
+           position: 'absolute',
+
+  bottom: 0,
+  left: 0,
+  right: 0,
+  opacity: .9,
+}}></View>
           {layoutSore.searchFlag==false && layoutSore.loginFlag &&<Layout/>}
           {/* {<Layout/>} */}
-          </>}
-  {layoutSore.searchFlag==false &&  layoutSore.loginFlag  &&     <HStack  justifyContent="center">
-<IconButton bg={'#7F8487'} shadow={9} w="50" h="50" style={{position:'absolute',left:20,bottom:70}} variant="solid" borderRadius="full" size="lg" onPress={()=>dispatch(isQuickActionsOpenHandler())}  icon={<Icon  style={{fontSize:30,color:'#23C1E4'}}  name="flash-outline" color="warmGray.50" _dark={{
-color: "warmGray.50"
-}} />} />
-</HStack>}
-</NavigationContainer>
-</DrawerLayoutAndroid>
-          </>
+          {layoutSore.searchFlag==false &&  layoutSore.loginFlag &&  
+         <IconButton bg={'#97C4B8'} shadow={9} w="50" h="50" style={styles.QuickActionsBtn} variant="solid" borderRadius="full"          size="sm" onPress={()=>dispatch(isQuickActionsOpenHandler())}  icon={<Icon  style={{fontSize:30,color:'#FF5B00'}}  name="fire"  />} /> }
+         </NavigationContainer>
+         </DrawerLayoutAndroid>
+         </>
     );
   }
 
   const styles = StyleSheet.create({
-    collaborateBtns:{
-   width:100,
-   height:50,
-   backgroundColor:"#ecf0f1",
-   justifyContent:'center',
-   alignItems: "center",
-   marginBottom:10,
-   borderColor:'black',
-   borderWidth:0.5
+    DrawerWidgets:{
+      width:130,height:100,backgroundColor:'#F9F9F9',justifyContent:'center',borderRadius:10,alignItems:'center',margin:10,  shadowColor: "#000",
+      shadowOffset: {
+      width: 0,
+      height: 12,
+      },
+      shadowOpacity: 0.58,
+      shadowRadius: 16.00,
+      elevation: 24,
+    },
+    logoutBtn:{
+      width:210,height:70,backgroundColor:'#F9F9F9',justifyContent:'center',borderRadius:10,alignItems:'center',margin:10, 
+      position:'absolute',
+      bottom:-75,
+      left:-110,
+      shadowColor: "#000",
+      shadowOffset: {
+      width: 0,
+      height: 12,
+      },
+      shadowOpacity: 0.58,
+      shadowRadius: 16.00,
+      elevation: 24,
 
     },
+    QuickActionsBtn:{
+      position:'absolute',right:20,bottom:70,width:50,height:50
+    },
+
     container: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      padding: 16
+      // padding: 16
     },
     navigationContainer: {
-      backgroundColor: "#ecf0f1"
+    backgroundColor: "#ecf0f1"
     },
-    paragraph: {
-      padding: 16,
-      fontSize: 15,
-      textAlign: "center"
+    imgBackgRound:{
+      width:'100%',
+      height:'100%',
+      borderBottomWidth:.3,
+      borderBottomRightRadius:20,
+      borderBottomLeftRadius:20,
+      borderColor:'grey'
+      , shadowColor: "#000",
+      shadowOffset: {width: 5, height: 12,},shadowOpacity: 0.54,shadowRadius: 16.00,elevation: 24
+    },
+    image:{
+      borderBottomRightRadius:20,
+      borderBottomLeftRadius:20
     }
-  });
-
+    });
   export default App
 
 

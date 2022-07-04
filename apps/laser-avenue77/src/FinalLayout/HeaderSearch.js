@@ -5,23 +5,18 @@ import {HeaderSearchHandler} from '../FinalLayout/store-finalLayout'
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {searchInputHandler} from '../Search/search-store'
-
 function HeaderSearch() {
     const navigation = useNavigation();
     const layoutSore = useSelector(state => state.finalLayoutStore);
     const dispatch = useDispatch();
     const [text, onChangeText] = useState("");
 
-    function backHandler() {
-    
-    }
     function searchSubmit() {
         dispatch(searchInputHandler(text))
         console.log('Hello!');
       }
-    
     return (
-        <View>
+<View>
 <View style={{flexDirection:'row',height:70,width:'100%',backgroundColor:'#F6FBF4',borderBottomWidth:.3,borderColor:'black',marginTop:30}}>
 <TouchableOpacity onPress={()=>{
 navigation.goBack()
@@ -34,11 +29,9 @@ dispatch(HeaderSearchHandler())
 style={styles.input}
 onChangeText={onChangeText}
 value={text}
-onSubmitEditing={searchSubmit}
-      />
+onSubmitEditing={searchSubmit}/>
 </View>
-
-        </View>
+</View>
     )
 }
 

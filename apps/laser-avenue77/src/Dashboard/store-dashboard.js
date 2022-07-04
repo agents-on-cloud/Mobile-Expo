@@ -7,24 +7,17 @@ export const dashboard=createSlice({
     initialState:{
         value:66,
         userToken:{
-        email: "Mohammad@gmail.com",
-        exp: 1654506398,
-        firstName: "Mohammad",
-        iat: 1654505498,
-        isActive: true,
-        lastName: "Haroun",
-        middleName: "Fathi",
-        phoneNumber: 785854588,
-        photo: null,
-        profileId: "5fd5d2f1-f63e-450b-b012-dd6d6bd64353",
-        profileType: "PROVIDER",
-        userId: "5fd5d2f1-f63e-450b-b012-dd6d6bd64353"},
+            
+    
+},
         ShowMenuFlag77:false,
         notificationModal:false,
         modalVisible:false,
         AdditionalAppointmentData:[],
         FullViewAppData:{},
-        FullViewAppFlag:false
+        FullViewAppFlag:false,
+        providerId:'',
+        employeeId:''
     },
     reducers:{
     increment:(state,action)=>{
@@ -32,38 +25,43 @@ export const dashboard=createSlice({
     },
     saveToken:(state,action)=>{
         let decoded = jwt_decode(action.payload);
-        console.log('decodeddecodeddecoded',decoded);
+    
         state.userToken=decoded
+        console.log('state.userTokenstate.userToken',state.userToken);
+        
+        
         },
     changeShowMenuFlag77:(state,action)=>{
             state.ShowMenuFlag77=!state.ShowMenuFlag77
             },
     closeMenue:(state,action)=>{
-                state.ShowMenuFlag77=false
+            state.ShowMenuFlag77=false
                 },
     notificationModalHandler:(state,action)=>{
-                    state.notificationModal=!state.notificationModal
+             state.notificationModal=!state.notificationModal
                     },
     closeModalHandler:(state,action)=>{
-                        state.notificationModal=false
+            state.notificationModal=false
                         },
-                        modalVisibleHandler:(state,action)=>{
-                            state.modalVisible= !state.modalVisible
+    modalVisibleHandler:(state,action)=>{
+            state.modalVisible= !state.modalVisible
                             },
-                            AdditionalAppointmentDataHandler:(state,action)=>{
-                                state.AdditionalAppointmentData= action.payload
-                                },  fullViewAppHandler:(state,action)=>{
-                                    
-                                    state.FullViewAppData= action.payload
-                                    state.FullViewAppFlag= true
-                                    },FullViewCloseHandler:(state,action)=>{
-                                      
-                                        state.FullViewAppFlag= false
-                                        },
+    AdditionalAppointmentDataHandler:(state,action)=>{
+            state.AdditionalAppointmentData= action.payload
+                                },  
+    fullViewAppHandler:(state,action)=>{
+
+            state.FullViewAppData= action.payload
+            state.FullViewAppFlag= true
+                                    },
+    FullViewCloseHandler:(state,action)=>{
+            state.FullViewAppFlag= false
+             },
+             saveProviderId:(state,action)=>{
+                state.providerId= action.payload.providerUuid
+                console.log(' state.providerId state.providerId', state.providerId);
+             }
     }
 })
-
-
-
-export const {increment,saveToken,changeShowMenuFlag77,closeMenue,notificationModalHandler,closeModalHandler,modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler,FullViewCloseHandler} =dashboard.actions
+export const {increment,saveToken,changeShowMenuFlag77,closeMenue,notificationModalHandler,closeModalHandler,modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler,FullViewCloseHandler,saveProviderId} =dashboard.actions
 export default dashboard.reducer 

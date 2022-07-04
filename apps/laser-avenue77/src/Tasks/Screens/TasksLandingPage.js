@@ -355,6 +355,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    marginBottom:150
   },
   tabs: {
     marginTop: 10,

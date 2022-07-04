@@ -2,14 +2,14 @@ import  React,{useEffect,useState,useRef} from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider,Spinner } from "native-base";
 import { useDispatch, useSelector } from 'react-redux';
 import {loginFlagHandler,closeloginFlagHandler,drawerHandler} from '../../FinalLayout/store-finalLayout'
-import {saveToken} from '../../Dashboard/store-dashboard'
+import {saveToken,saveProviderId} from '../../Dashboard/store-dashboard'
 import axios from 'axios'
 import requestBuilder from '../../requestRebuilder  '
 import { useFocusEffect } from '@react-navigation/native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-// import {closeloginFlagHandler} from '../../FinalLayout/store-finalLayout'
-const Example = ({navigation}) => {
+import requestRebuilder  from '../../requestRebuilder  '
+const SignIn = ({navigation}) => {
 
 const [loader,setLoader]=useState(false)
 const [expoPushToken, setExpoPushToken] = useState('');
@@ -21,6 +21,7 @@ const [userObj,setUserObj]=useState({
     password: "" })
     const [isAuthenticated,setIsAuthenticated]=useState(false)
     const finalLayoutStore = useSelector(state => state.finalLayoutStore);
+    const dashboardStore = useSelector(state => state.dashboard);
     const dispatch = useDispatch();
 
     Notifications.setNotificationHandler({
@@ -33,16 +34,12 @@ const [userObj,setUserObj]=useState({
     
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-      // This listener is fired whenever a notification is received while the app is foregrounded
       notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
         setNotification(notification);
       });
-  
-      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
         console.log(response);
       });
-  
       return () => {
         Notifications.removeNotificationSubscription(notificationListener.current);
         Notifications.removeNotificationSubscription(responseListener.current);
@@ -86,25 +83,36 @@ const [userObj,setUserObj]=useState({
         dispatch(closeloginFlagHandler())
         setIsAuthenticated(false)
       }, []));
-const signInAuthentication = (results)=> {
-    if ( results.data.message=="User Not Found!" ||results.data.message=="Username or Password is Incorrect" ) {
+ const signInAuthentication = async (results)=> {
+console.log('resultsresults',results);
+    if ( results.data.accessToken ) {
+try {
+  dispatch(saveToken(results.data.accessToken))
+  console.log('dashboardStore.userToken.userId',dashboardStore.userToken.userId);
+  await axios(requestRebuilder('providers','/providers','post',{userId: dashboardStore.userToken.userId})).then((results)=>dispatch(saveProviderId(results.data)) )
+  console.log('inside iffffffff');
+  dispatch(loginFlagHandler())
+  navigation.navigate('Dashboard')
+  setLoader(false)
+  
+} catch (error) {
+  setLoader(false)
+  console.log('====================================');
+  console.log(error);
+  console.log('====================================');
+}
+
+    }
+    else{
+      console.log('inside elseeeeeee');
       dispatch(closeloginFlagHandler())
       setLoader(false)
       setIsAuthenticated(true)
-    }
-    else{
-      dispatch(saveToken(results.data.accessToken))
-      dispatch(loginFlagHandler())
-      navigation.navigate('Dashboard')
-      setLoader(false)
     }}
-
   const signInHandler = async () => {
     setLoader(true)
       try {
       await axios(requestBuilder('ciam','/v1/signin','post',userObj)).then((results=>signInAuthentication(results))).then(()=>dispatch(drawerHandler()))
-
-    
     } 
       catch(error){
         dispatch(closeloginFlagHandler())
@@ -112,9 +120,9 @@ const signInAuthentication = (results)=> {
         setIsAuthenticated(true)
       }}
     return (
-      <NativeBaseProvider>
-    {loader && <Spinner mt="250" color="emerald.500" size="lg" accessibilityLabel="Loading posts" />}
-    {loader==false &&  <Center  flex={1} px="3" w="100%">
+          <NativeBaseProvider>
+          {loader && <Spinner mt="250" color="emerald.500" size="lg" accessibilityLabel="Loading posts" />}
+          {loader==false &&  <Center  flex={1} px="3" w="100%">
           <Box safeArea p="2" py="8" w="90%" maxW="290">
           <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{color: "warmGray.50"}}>
             Laser Avenue 
@@ -159,4 +167,4 @@ const signInAuthentication = (results)=> {
       </NativeBaseProvider>
       )
   };
-      export default Example
+      export default SignIn

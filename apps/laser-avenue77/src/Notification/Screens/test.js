@@ -1,53 +1,41 @@
 import React, { useState ,useEffect} from "react";
-import { Dimensions, TouchableOpacity, View ,ScrollView ,RefreshControl} from "react-native";
+import { View ,ScrollView ,RefreshControl} from "react-native";
 import { NativeBaseProvider, Box, Text, Pressable,Checkbox ,Heading, IconButton, HStack, Avatar, VStack, Spacer, Center,Button,Radio } from "native-base";
 import { SwipeListView } from "react-native-swipe-list-view";
-// import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
-import {onOpen,onClose} from '../store-notification'
 import { useDispatch, useSelector } from 'react-redux';
 import NotificationModal from '../Screens/NotificationModal'
 import axios from 'axios'
 import { useFocusEffect } from '@react-navigation/native';
 import requestBuilder from '../../requestRebuilder  '
-import {loginFlagHandler,closeloginFlagHandler,componentsLoaderHandler} from '../../FinalLayout/store-finalLayout'
+import {componentsLoaderHandler} from '../../FinalLayout/store-finalLayout'
 import Icon from '@expo/vector-icons/MaterialIcons';
 
-
-function Example() {
+function Notification() {
   const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
+  return new Promise((resolve) => setTimeout(resolve, timeout));
   };
-  
   const [refreshing, setRefreshing] = React.useState(false);
-
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(1).then(() => setRefreshing(false));
+  setRefreshing(true);
+  wait(1).then(() => setRefreshing(false));
   }, []);
-
   const [mode, setMode] = useState("Basic");
   return <View >
   
   <ScrollView  refreshControl={
-        <RefreshControl colors={["#42f545"]} refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Basic />
-        </ScrollView>
-        </ScrollView>
-
+  <RefreshControl colors={["#42f545"]} refreshing={refreshing} onRefresh={onRefresh} />}>
+  <ScrollView showsVerticalScrollIndicator={false}>
+  <Basic />
+  </ScrollView>
+  </ScrollView>
   </View>
-  
 }
-
 function Basic() {
   const dispatch = useDispatch();
   const dashboardStore = useSelector(state => state.dashboard);
   const [listData, setListData] = useState([]);
   const [updateNotification, setUpdateNotification] = useState([]);
   const [ChangeFlag, setChangeFlag] = React.useState(false);
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -72,12 +60,6 @@ function Basic() {
 
 
   const deleteRow =async (rowMap, rowKey) => {
- 
-    // closeRow(rowMap, rowKey.key);
-    // const newData = [...listData];
-    // const prevIndex = listData.findIndex(item => item.key === rowKey.key+1);
-    // newData.splice(prevIndex, 1);
-    // setListData(newData);
     await axios(requestBuilder('notifications','/notifications/delete/:id','delete',{id:rowKey.id}))
     setChangeFlag(!ChangeFlag)
   };
@@ -135,9 +117,9 @@ function Basic() {
 async function ReadHandler(payload) {
 
      try {
-      await axios(requestBuilder('notifications','/notifications/updateUnread/:id','put',{
-        "id":payload.id,
-        "is_unread":!payload.is_unread
+      await axios(requestBuilder('notifications','/notifications/unread/:id','put',{
+        "id":payload.notification_id,
+        // "is_unread":!payload.is_unread
     }))
        
      } catch (error) {
@@ -149,35 +131,17 @@ setUpdateNotification(!updateNotification)
     }
 
   const renderHiddenItem = (data, rowMap) => <HStack flex="1" pl="2" >
-    
-{/* //////////
-    <Pressable w="70" ml="auto" cursor="pointer" bg="coolGray.200" justifyContent="center" onPress={() => dispatch(onOpen())} _pressed={{
-      opacity: 0.5
-    }}>
-        <VStack alignItems="center" space={2}>
-          {/* <Icon as={<Entypo name="dots-three-horizontal" />} size="xs" color="coolGray.800" /> */}
-          {/* <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-            More
-          </Text>
-        </VStack>
-        
-  </Pressable>  */}
-
-
       <Pressable style={{position:"absolute",right:0}} w="70" h="70" cursor="pointer" bg="red.500" justifyContent="center" onPress={() => deleteRow(rowMap, data.item)} _pressed={{
       opacity: 0.5
     }}>
-        <VStack alignItems="center" space={2}>
-          {/* <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" /> */}
+          <VStack alignItems="center" space={2}>
           <Text color="white" fontSize="xs" fontWeight="medium">
             Delete
           </Text>
         </VStack>
       </Pressable>
-      {/* //////////////////////////////////// */}
       <Pressable style={{position:"absolute",left:0}} w="63" h="70" cursor="pointer" bg="#9BA3EB" justifyContent="center" >
-        <VStack alignItems="center" space={2}>
-          {/* <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" /> */}
+      <VStack alignItems="center" space={2}>
       { data.item.is_flagged==true &&     <Checkbox    defaultIsChecked onPress={async ()=>   await axios(requestBuilder('notifications','/notifications/updateFlag/:id','put',{
         "id":data.item.id,
         "is_flagged":!payload.is_flagged
@@ -186,23 +150,16 @@ setUpdateNotification(!updateNotification)
         "id":data.item.id,
         "is_flagged":!data.item.is_flagged
     })) }   />}
-     
           <Text color="white" fontSize="xs" fontWeight="medium">
             FLAG
           </Text>
         </VStack>
       </Pressable>
-      {/* ////////////////////////////////////////////////// */}
       <Pressable style={{position:"absolute",left:62}} w="63" h="70" cursor="pointer"  justifyContent="center" >
         <VStack alignItems="center" space={2}>
-          {/* <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" /> */}
     {   data.item.is_unread==true &&     <Button  h="70" style={{width:75,borderColor:"teal",borderWidth:1}}  onPress={ ()=> ReadHandler(data.item)  }   >Read</Button>}
     {    data.item.is_unread==false &&      <Button  h="70" style={{width:75}}  onPress={ ()=> ReadHandler(data.item)}  >UnRead</Button>}
 
-
-          {/* <Text color="white" fontSize="xs" fontWeight="medium">
-            READ
-          </Text> */}
         </VStack>
       </Pressable>
     </HStack>;
@@ -214,13 +171,11 @@ setUpdateNotification(!updateNotification)
    
         return (
           <NativeBaseProvider>
-                <Example />
-       
-              <NotificationModal/>
-              <View  style={{position:'absolute',right:5,bottom:20,}}>
-         <Button onPress={()=>navigation.navigate('createNotification')} bg="#2F8F9D"  width="62" height="62"  style={{borderRadius:100}}  ><Icon  style={{fontSize:37,paddingTop:9,color:"#F9F3EE"}} name="add-alert"/> </Button>
+          <Notification />
+          <NotificationModal/>
+          <View  style={{position:'absolute',right:5,bottom:20,}}>
+         {/* <Button onPress={()=>navigation.navigate('createNotification')} bg="#2F8F9D"  width="62" height="62"  style={{borderRadius:100}}  ><Icon  style={{fontSize:37,paddingTop:9,color:"#F9F3EE"}} name="add-alert"/> </Button> */}
          </View>
-     
           </NativeBaseProvider>
         );
     };

@@ -68,16 +68,11 @@ function styleAppoint(params) {
 
   // 
     return (
-    <View>
-       
+        <View>
         <View>
         <Box h="120%" shadow={9} style={styleAppoint()} w="90%" rounded="xl" _text={{
         fontSize: "md",
-        fontWeight: "medium",
-        color: "warmGray.50",
-   
-  }}>
-      
+        fontWeight: "medium" }}>
       <Pressable variant="ghost"  onPress={()=>navigation.navigate('AppointmentProviderLandingPage')}>
       <Avatar   shadow={9} bg="teal"  alignSelf="center" size="xl" style={{position:'absolute',top:-40,left:40}}  >
       <LottieView   style={{height:130}}  source={require('../../animation/appointments.json')}   />
@@ -96,15 +91,8 @@ function styleAppoint(params) {
       </Text>     
       </Center>
       </View>
-      {/* <HStack style={{marginBottom:30}}> */}
-      {/* {ALLappointmentNumber <=5 && ALLappointmentNumber !==0&&  <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>Next {ALLappointmentNumber} Appointments</Text>} */}
-     {/* {ALLappointmentNumber > 5 && <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>Next 5 Appointments</Text>}
-     {ALLappointmentNumber ==0  && <Text style={{marginLeft:20,fontSize:17,color:'teal',marginBottom:18,paddingTop:6}}>No Appointments </Text>} */}
-      {/*<Button variant="ghost" bg="#d4d4d4"  onPress={()=>navigation.navigate('AppointmentProviderLandingPage')} style={{width:69 ,height:32,   marginLeft:80}} shadow={1}><Text style={{fontSize:10}} >See More</Text></Button>*/}
-
-      {/* </HStack> */}
-       {appointmentData.map(item=>
-         <Box style={{borderBottomWidth:1.5, borderColor: "#7C99AC",marginBottom:2}}  >
+      {appointmentData.map(item=>
+      <Box style={{borderBottomWidth:1.5, borderColor: "#7C99AC",marginBottom:2}}  >
                <HStack style={{borderRadius:10,backgroundColor:'#CDF0EA'}}  h={60} shadow={1} space={3} justifyContent="space-between" >
                <Avatar size="44px" style={{marginTop:10,marginLeft:3}} source={{
                uri: item.Consumer_Image

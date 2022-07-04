@@ -1,13 +1,9 @@
 import React,{useEffect,useState,useCallback} from 'react'
 import { Pressable, Text, View} from 'react-native';
 import {Box,Button,Center,HStack,VStack} from "native-base";
-// import Carousel, { Pagination } from 'react-native-snap-carousel';
-// import { PieChart } from "react-native-gifted-charts";
+
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  '
-import Icon from '@expo/vector-icons/MaterialIcons';
-import {useRoute} from '@react-navigation/native';
-
 
 
 function Billing({navigation}) {

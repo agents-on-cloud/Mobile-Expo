@@ -1,58 +1,45 @@
-import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
-// You can import from local files
+export default function App() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
-// or any pure javascript modules available in npm
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
-export default class App extends React.Component {
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
 
-  componentDidMount() {
-
-    let region = {identifier:1, latitude:31.9712272, longitude:35.8350229, radius:10}
-    Location.startGeofencingAsync("LOCATION_GEOFENCE", [region])
-
-    TaskManager.defineTask("LOCATION_GEOFENCE", ({ data: { eventType, region }, error }) => {
-        if (error) {
-          // check `error.message` for more details.
-          return;
-        }
-        if (eventType === Location.GeofencingEventType.Enter) {
-          alert("enter in region!")
-          console.log("You've entered region:", region);
-        } else if (eventType === Location.GeofencingEventType.Exit) {
-          alert("Exit the region!")
-          console.log("You've left region:", region);
-        }
-      });
-    }
-  
-  
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          Change code in the editor and watch it change on your phone! Save to get a shareable url.
-        </Text>
-   
-      </View>
-    );
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
   }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });

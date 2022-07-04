@@ -561,6 +561,7 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'space-between',
+    marginBottom:100
   },
   titleText: {
     width: 90,

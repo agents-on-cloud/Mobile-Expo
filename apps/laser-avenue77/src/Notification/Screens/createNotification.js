@@ -8,16 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {notificationStore, saveUsers} from "../store-notification"
 import {onOpenUsers,onCloseUsers} from '../store-notification'
 
-
-
-
-
-
-
-
-
-
-
 const Example = ({navigation}) => {
   
     
@@ -40,9 +30,6 @@ const Example = ({navigation}) => {
       "profileIds":[]
     
     })
-
-    
-
 
 ///////////////////////////////////
 
@@ -72,11 +59,8 @@ const Example = ({navigation}) => {
       } catch (error) {
           console.log('00000000000000',error);
       }
-
-
     }
     
- 
   return <Center w="100%">
       <Box safeArea p="2" w="90%" maxW="290" py="8">
         <Heading size="lg" color="coolGray.800" _dark={{

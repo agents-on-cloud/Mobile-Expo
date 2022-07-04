@@ -1,5 +1,5 @@
-import React,{useEffect,useState} from 'react'
-import {View,Text,ScrollView,TouchableOpacity,StyleSheet} from 'react-native'
+import React,{useEffect,useState,useRef} from 'react'
+import {View,Text,ScrollView,TouchableOpacity,StyleSheet,BackHandler,TouchableHighlight,DrawerLayoutAndroid} from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pressable, Box, HStack, Spacer, Flex, Checkbox, Center, NativeBaseProvider, VStack ,Spinner,Heading,Avatar,Divider,Button ,PresenceTransition } from "native-base";
@@ -9,16 +9,18 @@ import requestBuilder from '../requestRebuilder  '
 import {emptySearchInput,saveRecentSearches,DeleteRecentSearch,saveUniqueRecentSearches} from './search-store'
 import {componentsLoaderHandler} from '../FinalLayout/store-finalLayout'
 import { SwipeListView } from "react-native-swipe-list-view";
+import {HeaderSearchHandler} from '../FinalLayout/store-finalLayout'
 
 
 
 
-export default function searchSreen({navigation}) {
+
+export default function SearchSreen({navigation}) {
+  const drawer = useRef(null);
   const searchStore = useSelector(state => state.searchStore);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [NodataFlag, setNodataFlag] = useState(false);
-  // const [firstRender, setFirstRender] = useState(0);
   const [groupValues, setGroupValues] = useState([]);
   const [deleteRecentSearch, setDeleteRecentSearch] = useState([]);
   const [testARR,settestARR]=useState([1,2,3,4])
@@ -27,10 +29,15 @@ export default function searchSreen({navigation}) {
 
   useFocusEffect(
     React.useCallback(() => {
+      const backAction = () => {
+      dispatch(HeaderSearchHandler())
+      };
+  
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
       setNodataFlag(false)
-      // console.log('77777777777777',searchStore.recentSearches);
-      // setDeleteRecentSearch(searchStore.recentSearches)
-    
       dispatch(emptySearchInput())
       if (searchStore.searchInput !=="") {
     
@@ -39,22 +46,17 @@ export default function searchSreen({navigation}) {
       }else{
         setSearchResults([])
       }
+      return () => backHandler.remove();
     }, [searchStore.searchInput,searchStore.searchFlag])
   );
   
 function getRecentSearch() {
-// Some array I got from async call
-
 const uniqueAddresses = Array.from(new Set(searchStore.recentSearches.map(a => a.entityID)))
  .map(id => {
    return searchStore.recentSearches.find(a => a.entityID === id)
  })
-//  console.log();
 
  dispatch(saveUniqueRecentSearches([...uniqueAddresses]))
-
-//  setFinalRecentSearches(uniqueAddresses)
-//  console.log('uniqueAddresses',FinalRecentSearches);
 
 }
 
@@ -202,9 +204,17 @@ try {
 }
   
 }
+const navigationView = () => (
+  <View style={[styles.container, styles.navigationContainer]}>
+    <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+    <Button
+      title="Close drawer"
+      onPress={() => drawer.current.closeDrawer()}
+    />
+  </View>
+);
 
 function handleRecentSearches(item) {
-  // getRecentSearch()
   dispatch(saveRecentSearches(item))
 }
 function DeleteSearchItem(payload) {
@@ -214,79 +224,99 @@ function DeleteSearchItem(payload) {
  for (let i = 0; i < afterDelete.length; i++) {
   if (afterDelete[i].entityID !==payload.entityID) {
     finalArr.push(afterDelete[i])
-  }
-  
- }
- 
-console.log('finalArrfinalArrfinalArr',finalArr);
+  }}
   dispatch(DeleteRecentSearch(finalArr))
 }
 
+function AvatarType(payload) {
+  if (payload.toLowerCase()=='rooms') {
+    return "https://cdn-icons-png.flaticon.com/512/489/489405.png"
+  }
+  if (payload.toLowerCase()=='provider') {
+    return "https://cdn-icons.flaticon.com/png/512/4326/premium/4326511.png?token=exp=1656836180~hmac=8282c2ac08151ee1848406b4b9e55580"
+  }
+  if (payload.toLowerCase()=='consumer') {
+    return "https://cdn-icons-png.flaticon.com/512/2760/2760970.png"
+  }
+  if (payload.toLowerCase()=='service') {
+    return "https://cdn-icons-png.flaticon.com/512/1605/1605350.png"
+  }
+  if (payload.toLowerCase()=='equipments') {
+    return "https://cdn-icons-png.flaticon.com/512/3076/3076840.png"
+  }
+  if (payload.toLowerCase()=='item') {
+    return "https://cdn-icons-png.flaticon.com/512/743/743007.png"
+  }
+  if (payload.toLowerCase()=='appointments') {
+    return "https://cdn-icons.flaticon.com/png/512/4465/premium/4465479.png?token=exp=1656836412~hmac=b19722cdfe6055c451cd1823084c586b"
+  }}
   const renderItem = ({
     item,
     index
   }) => 
-  <Box  alignItems="center" >
-  <Pressable onPress={()=>handleRecentSearches(item)}>
-    {({
-    isHovered,
-    isFocused,
-    isPressed
-  }) => {
-    return <Box  w="400" mt="10" borderWidth="1" borderColor={'grey'} shadow="3" bg={isPressed ? "coolGray.200" : isHovered ? "coolGray.200" : "coolGray.100"} p="5" rounded="8" style={{
+  <Box  alignItems="center"  >
+  <TouchableHighlight  underlayColor={'#AAA'} onPress={()=>handleRecentSearches(item)}>
 
-      transform: [{
-        scale: isPressed ? 0.96 : 1
-      }],
-      }}>
-        <Text bold style={{position:'absolute',top:5,left:"50%",color:'black'}}>{item.type.toUpperCase()}</Text>
-          <HStack alignItems="center">
-          <Avatar size="48px" source={{
-      uri: 'https://cdn-icons-png.flaticon.com/512/387/387561.png'
+     <Box  w="320" mt="10" borderWidth="1" borderColor={'grey'} shadow="3" bg={"coolGray.100"}  rounded="8" >
+        <Heading bold style={{position:'absolute',top:15,left:"50%",color:'#1E5128',fontSize:18}}>{item.type.toUpperCase()}</Heading>
+        <Avatar style={{position:'absolute',top:5,left:"30%"}} size="48px" source={{
+      uri: AvatarType(item.type)
       }} />
+         
+     
       
-            <Flex direction="row" h="7" p="1"mt="2" ml="3" >
-    <Text>{item.label1} : {item.value1}</Text>
-    <Divider h="6" bg="emerald.500" thickness="2" mx="2" orientation="vertical" ml="6" mr="6" />
-    <Text>{item.label2} : {item.value2}  </Text>
-    
-  </Flex>
-          </HStack>
-          <HStack w="300" mt="2">
-          <HStack w="180"  >
-          <Text mt="2"  style={{fontSize:12}} color="coolGray.700">
-          {item.label3} :  {item.value3}
-          </Text>
-          </HStack>
-          <HStack  w="150">
-          <Text mt="2" style={{fontSize:12}}  color="coolGray.700">
-          {item.label4} :  {item.value4}
-          </Text>
-          </HStack>
-          </HStack>
-          <Flex>
-          <HStack  mt="2">
-          <Text  style={{fontSize:12}} color="coolGray.800" mt="2" fontWeight="medium"   alignSelf="flex-start">
-             {/* <Icon name="clock-o" mr="5" /> */}
-             {item.label5} :  {item.value5}
-               
-              </Text> 
-              <Text  style={{fontSize:12,position:'absolute',left:'50%'}} color="coolGray.800" ml="10" mt="2" fontWeight="medium"   alignSelf="flex-start">
-                {/* <Icon name="clock-o"/> */}
-                {item.label6} :  {item.value6}
-              </Text>
-              </HStack>
-          </Flex>
-        </Box>;
-  }}
-  </Pressable>
+           
+     {item.label1 &&     <View style={{flexDirection:'row',marginTop:60,width:'100%',backgroundColor:'#ECF2F9',padding:10,justifyContent:'center',alignItems:'center',alignContent:'center',borderRadius:5,borderWidth:.5,borderColor:'#7C83FD'}}><Heading style={styles.labelStyle}>{item.label1.toUpperCase()}: </Heading><Text style={styles.valueStyle}>{item.value1}</Text>
+          </View>}
+        {item.label2 &&  <View style={styles.containerSearch} >{<Heading style={styles.labelStyle}>{item.label2.toUpperCase()}: </Heading>}<Text style={styles.valueStyle}>{item.value2} </Text>
+          </View>}
+       {item.label3 &&   <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label3.toUpperCase()} :  </Heading>}
+       {typeof item.value3=='boolean'&& <Text style={styles.valueStyle}>{item.value3.toString()}</Text>}
+      {typeof item.value3=='string'&& <Text style={styles.valueStyle}>{item.value3}</Text>}
+          </View>}
+         
+        {item.label4 &&  <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label4.toUpperCase()} :  </Heading>}
+        
+        {typeof item.value4=='boolean'&& <Text style={styles.valueStyle}>{item.value4.toString()}</Text>}
+      {typeof item.value4=='string'&& <Text style={styles.valueStyle}>{item.value4}</Text>}
+          </View>}
+         {item.label5 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label5.toUpperCase()} :  </Heading>}
+         {typeof item.value5=='boolean'&& <Text style={styles.valueStyle}>{item.value5.toString()}</Text>}
+      {typeof item.value5=='string'&& <Text style={styles.valueStyle}>{item.value5}</Text>}
+          </View>}
+          {item.label6 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label6.toUpperCase()} :  </Heading>}
+          {typeof item.value6=='boolean'&& <Text style={styles.valueStyle}>{item.value6.toString()}</Text>}
+      {typeof item.value6=='string'&& <Text style={styles.valueStyle}>{item.value6}</Text>}
+          </View>}
+          {item.label7 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label7.toUpperCase()} :  </Heading>}
+          {typeof item.value7=='boolean'&& <Text style={styles.valueStyle}>{item.value7.toString()}</Text>}
+      {typeof item.value7=='string'&& <Text style={styles.valueStyle}>{item.value7}</Text>}
+          </View>}
+          {item.label8 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label8.toUpperCase()} :  </Heading>}
+          {typeof item.value8=='boolean'&& <Text style={styles.valueStyle}>{item.value8.toString()}</Text>}
+      {typeof item.value8=='string'&& <Text style={styles.valueStyle}>{item.value8}</Text>}
+          </View>}
+          {item.label9 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label9.toUpperCase()} :  </Heading>}
+          {typeof item.value9=='boolean'&& <Text style={styles.valueStyle}>{item.value9.toString()}</Text>}
+      {typeof item.value9=='string'&& <Text style={styles.valueStyle}>{item.value9}</Text>}
+          </View>}
+          {item.label10 && <View style={styles.containerSearch}>{<Heading style={styles.labelStyle}>{item.label10.toUpperCase()} :  </Heading>}
+          {typeof item.value10=='boolean'&& <Text style={styles.valueStyle}>{item.value10.toString()}</Text>}
+      {typeof item.value10=='string'&& <Text style={styles.valueStyle}>{item.value10}</Text>}
+          </View>}
+
+      
+      
+        </Box>
+
+  </TouchableHighlight>
 </Box>
 
   const renderHiddenItem = (data, rowMap) => <HStack flex="1" pl="2" >
     
 
 
-      <Pressable style={{position:"absolute",right:14,top:45,borderRadius:10}} w="70" h="130" cursor="pointer" bg="red.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
+      <Pressable style={{position:"absolute",right:35,top:60,borderRadius:10}} w="70" h={'80%'} cursor="pointer" bg="red.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
       opacity: 0.5
     }}>
         <VStack alignItems="center" space={2}>
@@ -297,7 +327,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
         </VStack>
       </Pressable>
 
-      <Pressable style={{position:"absolute",right:86,top:45,borderRadius:10}} w="70" h="130" cursor="pointer" bg="yellow.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
+      <Pressable style={{position:"absolute",right:107,top:60,borderRadius:10}} w="70" h={'80%'} cursor="pointer" bg="yellow.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
       opacity: 0.5
     }}>
         <VStack alignItems="center" space={2}>
@@ -308,7 +338,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
         </VStack>
       </Pressable>
 
-      <Pressable style={{position:"absolute",right:159,top:45,borderRadius:10}} w="70" h="130" cursor="pointer" bg="blue.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
+      <Pressable style={{position:"absolute",right:180,top:60,borderRadius:10}} w="70" h={'80%'} cursor="pointer" bg="blue.500" justifyContent="center" onPress={() => console.log('ooo')} _pressed={{
       opacity: 0.5
     }}>
         <VStack alignItems="center" space={2}>
@@ -318,10 +348,6 @@ console.log('finalArrfinalArrfinalArr',finalArr);
           </Heading>
         </VStack>
       </Pressable>
-      {/* //////////////////////////////////// */}
- 
-      {/* ////////////////////////////////////////////////// */}
-
     </HStack>;
 
 
@@ -329,7 +355,6 @@ console.log('finalArrfinalArrfinalArr',finalArr);
    
   
          <ScrollView  >
-          {/* <Button onPress={()=>console.log('groupValues',groupValues)}>test</Button> */}
            <TouchableOpacity style={{width:80,height:40,backgroundColor:'#DDDDDD',borderRadius:10,paddingTop:8,marginLeft:10,marginTop:5}} onPress={() => setIsOpen(!isOpen)}>
      <Text>  {isOpen ? "Show Less" : "Catagories"}</Text>  
      </TouchableOpacity>
@@ -342,7 +367,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
         duration: 500
       }
     }}>
-        <View style={{ marginTop:30,backgroundColor:'#DDDDDD',borderRadius:10,width:300,height:150}} >
+        <View style={{ marginTop:30,backgroundColor:'#DDDDDD',borderRadius:10,width:280,height:150}} >
                  
       <Checkbox.Group onChange={setGroupValues} value={groupValues} accessibilityLabel="choose numbers">
       <View style={{flexDirection:'column',padding:10}}>
@@ -361,7 +386,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
     <View style={{paddingBottom:7}}>
       <Checkbox size="md" value="inventory">Inventory</Checkbox>
       </View>
-      <Checkbox size="md" value="equipment">Equipments</Checkbox>
+      <Checkbox size="md" value="equipment">Equipment</Checkbox>
       </View>
       <View style={{marginLeft:'26%'}}>
       <Checkbox size="md" value="appointments">Appointments</Checkbox>
@@ -373,11 +398,9 @@ console.log('finalArrfinalArrfinalArr',finalArr);
             </View>}
          
 <View style={{ marginTop:isOpen?120:0,marginBottom:50}}>
-<SwipeListView data={searchResults} renderItem={renderItem} renderHiddenItem={renderHiddenItem} rightOpenValue={-224} leftOpenValue={130} previewRowKey={"0"} previewOpenValue={-40} previewOpenDelay={3000}  />
-
-
-
+<SwipeListView data={searchResults} renderItem={renderItem}    renderHiddenItem={renderHiddenItem} rightOpenValue={-224} leftOpenValue={130}   />
 </View>
+
 {searchResults.length ==0 &&<View>
 { NodataFlag && <Text style={{position:'absolute',left:'30%',marginBottom:50,fontSize:25}}>No Data Found</Text>}
   <ScrollView>
@@ -397,7 +420,6 @@ console.log('finalArrfinalArrfinalArr',finalArr);
           <View>
          <Text style={{marginLeft:10,marginTop:15}}>Category: {item.type}</Text> 
          <Text   style={{marginLeft:10,marginTop:3}}>{item.value1}</Text> 
-      
          </View>
          <TouchableOpacity onPress={()=> DeleteSearchItem(item)} style={{position:'absolute',right:20,top:'30%',backgroundColor:'#DDDDDD',width:30,height:30}}>
          <Icon  name="close" style={{fontSize:30,paddingLeft:3}}  />
@@ -419,6 +441,7 @@ console.log('finalArrfinalArrfinalArr',finalArr);
   )
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -433,6 +456,37 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   label: {
-    margin: 8,
+    // margin: 8,
+ 
   },
+  labelStyle:{
+    position:'absolute',
+    left:'20%',
+    top:'40%',
+   fontSize:14,
+   color:'#3EC70B'
+  },
+  valueStyle:{
+  marginLeft:'50%',
+  color:'#3330E4'
+  },
+  containerSearch:{
+    flexDirection:'row',
+    width:'100%',
+    backgroundColor:'#ECF2F9',
+    padding:15,
+    justifyContent:'center',
+    borderRadius:5,borderWidth:.7,borderColor:'#7C83FD',
+    marginBottom:1,
+    marginTop:1
+  },
+  container: {
+
+  },
+  navigationContainer: {
+
+  },
+  paragraph: {
+
+  }
 });

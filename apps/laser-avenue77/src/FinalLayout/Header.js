@@ -16,9 +16,7 @@ import {HeaderSearchHandler} from '../FinalLayout/store-finalLayout'
  const drawer = useRef(null);
  const [selected, setSelected] = useState(0);
  const navigation = useNavigation();
-//  useFocusEffect(() => {
-//  console.log('ppppppppppppppppppppppppp');
-//  }, [navigation])
+
  
 function searchHandler() {
 dispatch(HeaderSearchHandler())

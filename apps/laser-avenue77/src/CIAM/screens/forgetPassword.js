@@ -4,21 +4,15 @@ import { Platform } from "react-native";
 import axios from 'axios'
 import requestRebuilder from '../../requestRebuilder  '
  
-const Example = () => {
-  const [phoneNumber,setphoneNumber]=useState('')
-
+const ForgetPass = () => {
+const [phoneNumber,setphoneNumber]=useState('')
 async function forgetHandler() {
 try {
   await axios(requestRebuilder('ciam','/users/forgetPasswordbyid/6f818474-dc8e-40d0-b5ca-b5fb5c58bc17','post',{phone:phoneNumber})).then(results=>console.log('resultsresults',results))
 } catch (error) {
-
   console.log(error);
 }
-
-
-  
 }
-
   return <KeyboardAvoidingView h={{
     base: "200px",
     lg: "auto"
@@ -41,7 +35,7 @@ try {
         return (
           <NativeBaseProvider>
             <Center flex={1} px="3">
-                <Example />
+                <ForgetPass />
             </Center>
           </NativeBaseProvider>
         );

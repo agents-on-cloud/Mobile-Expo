@@ -49,70 +49,46 @@ function Hr({navigation}) {
           
           }) }
       setProviders(providerInfo)
- 
-      console.log('providerInfoproviderInfoproviderInfo',providerInfo);
   }
   
     return (
       <ScrollView>
      {provider.map(item=> <Center  flex={1} px="3">
-  
-
       <Pressable>
       {({
       isHovered,
       isFocused,
-      
       }) => {
-   
-      
         return ( <View>
                <Text style={{position:'absolute',right:14,top:30,fontSize:12}}>{item.date}</Text>
                <Text style={{position:'absolute',right:14,top:50,fontSize:11}}>{item.day.toUpperCase()}</Text>
-
-     
-     <Box mt="4" maxW="96"  shadow={5}  pt="5"  pl="5"  pr="5" rounded="8" >
+            <Box mt="4" maxW="96"  shadow={5}  pt="5"  pl="5"  pr="5" rounded="8" >
             <HStack space={10}  w="300"  justifyContent="center" alignItems="center">
-
-              <Text style={{textAlign:'center'}}  color="coolGray.800" fontWeight="medium" fontSize="xl">
+            <Text style={{textAlign:'center'}}  color="coolGray.800" fontWeight="medium" fontSize="xl">
             DR <Text>{item.providerName}</Text>
             </Text>
               <Avatar  bg="cyan.500" source={{
       uri: "https://img.freepik.com/free-vector/doctor-character-background_1270-84.jpg?size=338&ext=jpg"
     }}>
-        
-      </Avatar>
-    
-            </HStack>
-           <HStack >
-             
+             </Avatar>
+             </HStack>
+             <HStack >
              <Text italic  mt="5" fontSize="sm" color="coolGray.700"> Working Hours:</Text>
-          {item.workingHours.length !==0 &&   <Text pl="5"  mt="5" fontSize="sm" color="coolGray.700">{item.workingHours[0][item.day].from}</Text>}
+           {item.workingHours.length !==0 &&   <Text pl="5"  mt="5" fontSize="sm" color="coolGray.700">{item.workingHours[0][item.day].from}</Text>}
              <Text pl="5" mt="5" fontSize="sm" color="coolGray.700">  to</Text>
             {item.workingHours.length !==0 &&   <Text pl="5"  mt="5" fontSize="sm" color="coolGray.700">{item.workingHours[0][item.day].to}</Text>}
-           
             </HStack>
             <HStack >
-             
               <Text italic  mt="2" fontSize="sm" color="coolGray.700"> Check in/out:  </Text>
               <Text pl="7" mt="2" fontSize="sm" color="coolGray.700">{item.checkIn} </Text>
               <Text pl="5" mt="2" fontSize="sm" color="coolGray.700">to</Text>
               {item.checkOut=='null' && <Text pl="6" mt="2" fontSize="sm" color="coolGray.700">____</Text>}
               {item.checkOut !=='null' && <Text pl="6" mt="2" fontSize="sm" color="coolGray.700">{item.checkOut}</Text>}
-            
              </HStack>
-             {/* <HStack space={5} pt="10"  w="300"  justifyContent="center" alignItems="center">
-             
-             <Button disabled backgroundColor="grey" > Check in </Button>
-             <Button disabled backgroundColor="grey">Check out</Button>
-           
-            </HStack> */}
             <Flex>
-              {isFocused ? <Text mt="2" fontSize={12} fontWeight="medium" textDecorationLine="underline" color="darkBlue.600" alignSelf="flex-start">
-                  
-                </Text> : <Text mt="2" fontSize={12} fontWeight="medium" color="darkBlue.600">
-                 
-                </Text>}
+            {isFocused ? <Text mt="2" fontSize={12} fontWeight="medium" textDecorationLine="underline" color="darkBlue.600" alignSelf="flex-start">
+            </Text> : <Text mt="2" fontSize={12} fontWeight="medium" color="darkBlue.600">
+            </Text>}
             </Flex>
           </Box>
           </View>)

@@ -1,25 +1,20 @@
 import React,{useEffect,useState} from 'react'
 import { Text, View, SafeAreaView,ScrollView,Pressable } from 'react-native';
 import { Button,HStack,StatusBar,Box,Heading,Avatar,Center,VStack} from "native-base";
-// import LottieView from 'lottie-react-native';
 import {  FlatList, Spacer, NativeBaseProvider } from "native-base";
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  '
 import Icon from '@expo/vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-
 function Appointment({navigation}) {
   const dashboardStore = useSelector(state => state.dashboard);
   const dispatch = useDispatch();
-  
-
      useFocusEffect(
       React.useCallback(() => {
         getAppointments()
       }, [])
     );
-  
 
     const [data,setData] =useState([])
     const [appointmentData,setAppointmentData] =useState([])
@@ -27,22 +22,18 @@ function Appointment({navigation}) {
 
 async function getAppointments() {
   try {
-await axios(requestBuilder( "appointments", "/appointments/getAllappointments","get")).then((results)=>appontmentHandler(results));
-    
+await axios(requestBuilder( "appointments", "/appointments","get")).then((results)=>appontmentHandler(results));
   } catch (error) {
     console.log('errrrore',error);
   }
-
-
 }
-function appontmentHandler(results) {
+  function appontmentHandler(results) {
   if (results.data.success) {
     setALLappointmentNumber(results.data.Appointments.length)
    let rr=[]
       for (let i = 0; i < results.data.Appointments.length; i++) {
         if (i<5) {
          rr.push({fullName:results.data.Appointments[i].doctorname,avatarUrl:"https://img.freepik.com/free-vector/doctor-character-background_1270-84.jpg?w=2000",id:results.data.Appointments[i].appid,timeStamp:results.data.Appointments[i].start,recentText:results.data.Appointments[i].patientname}) }
-         
         }
         rr.sort((a, b) => a.timeStamp - b.timeStamp);
         setAppointmentData(rr)
@@ -74,29 +65,19 @@ function styleAppoint(params) {
     marginLeft:"5%",
     marginBottom:80,
     height:hightStyle()
-  }
-  
-}
-
+  }}
 
     return (
-    <View>
-       
+        <View>
         <View>
         <Box shadow={9} style={styleAppoint()} w="90%" rounded="xl" _text={{
         fontSize: "md",
         fontWeight: "medium",
-        color: "warmGray.50",
-   
-  }}>
-      
-      <Pressable variant="ghost"  onPress={()=>navigation.navigate('AppointmentLandingPage')}>
+        color: "warmGray.50" }}>
+     <Pressable variant="ghost"  onPress={()=>navigation.navigate('AppointmentLandingPage')}>
      <Avatar   shadow={9} bg="teal"  alignSelf="center" size="xl" style={{position:'absolute',top:-30}}  >
-     {/* <LottieView   style={{height:130}}  source={require('../../animation/appointments.json')} autoPlay loop  /> */}
-      </Avatar>
-      </Pressable>
-     
-
+     </Avatar>
+    </Pressable>
       <VStack space={3}  mt="100">
        <Box>
       <Center fontSize="xl"   >
@@ -137,8 +118,7 @@ function styleAppoint(params) {
               <Text style={{fontSize:10 ,position:'absolute',right:0}} _dark={{
           color: "warmGray.50"
         }} color="coolGray.800" >
-       
-               {" "} {item.timeStamp}
+        {" "} {item.timeStamp}
         </Text>
         </HStack>
         </Box>)}
@@ -146,9 +126,7 @@ function styleAppoint(params) {
         </VStack>
         </Box>
         </View>
-
-
-    </View>
+        </View>
     )
     
 }

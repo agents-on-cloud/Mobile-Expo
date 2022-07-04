@@ -28,12 +28,7 @@ export const searchStore=createSlice({
           return state.recentSearches.find(a => a.entityID === id)
         })
      state.recentSearches=uniqueAddresses
-        
-        // state.recentSearches=recent
-        // state.recentSearches= 
-        // console.log('/////////////////',action.payload);
-        // state.recentSearches.push(action.payload)
-        // console.log('laaaaaaaaaaaaaaaaaith',JSON.stringify(state.recentSearches)  );
+
                 },
      DeleteRecentSearch:(state,action)=>{
                     state.recentSearches=action.payload
@@ -42,28 +37,19 @@ export const searchStore=createSlice({
                     console.log(state.recentSearches);
                     console.log('====================================');
 
-                    // console.log('888888888888',action.payload);
-                    // let newRecentSearches=[]
-                    // for (let i = 0; i < state.recentSearches.length; i++) {
-                    //     console.log('state.recentSearches[i]',state.recentSearches[i]);
-                    //     if (state.recentSearches[i] !== action.payload.entityID) {
-                    //         newRecentSearches.push(state.recentSearches[i])
-                    //     }
-                      
-                        
-                    // }
-                    // state.recentSearches = newRecentSearches
-                    // console.log('state.recentSearchesstate.recentSearches',newRecentSearches);
                     },
                     saveUniqueRecentSearches:(state,action)=>{
                         console.log('action.payload',action.payload);
                         state.recentSearches=action.payload
                         console.log('state.recentSearches',state.recentSearches);
-                    }
+                    },
+                    ChangeSearchFlag:(state,action)=>{
+                        state.searchFlag =true
+                        },
     }
 })
 
 
 
-export const {increment,searchInputHandler,emptySearchInput,saveRecentSearches,DeleteRecentSearch,saveUniqueRecentSearches} =searchStore.actions
+export const {increment,searchInputHandler,emptySearchInput,saveRecentSearches,DeleteRecentSearch,saveUniqueRecentSearches,ChangeSearchFlag} =searchStore.actions
 export default searchStore.reducer 

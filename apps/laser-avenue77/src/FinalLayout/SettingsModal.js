@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Button, Modal, FormControl, IconButton, Center, NativeBaseProvider,Text } from "native-base";
 import { useState } from "react";

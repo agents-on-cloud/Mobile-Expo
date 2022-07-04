@@ -21,7 +21,6 @@ const App = () => {
 
     useFocusEffect(
       React.useCallback(() => {
-        console.log('qqqqqqqqqqqqqq',dashboardStore.FullViewAppData.Appointment_id);
        if (dashboardStore.FullViewAppData.Status =='Checked-in') {
         setIsChecked(true)
         onChangeRequestedBy('')
@@ -30,7 +29,6 @@ const App = () => {
        }
       }, [])
     );
-    
 async function CheckIn() {
   setIsChecked(true)
   setAppStatus('Checked-in')
@@ -72,7 +70,7 @@ async function closeHandler() {
             <Icon style={{fontSize:25}} name="close" />
             </Pressable>
             <ScrollView style={{width:'100%',marginBottom:25}}>
-            <Heading style={{textAlign:'center',fontSize:18,color:"#4E9F3D",marginBottom:10,paddingTop:10}}>DR. {dashboardStore.userToken.firstName+" "+dashboardStore.userToken.lastName}</Heading>
+            <Heading style={{textAlign:'center',fontSize:18,color:"#1E5128",marginBottom:10,paddingTop:10}}>DR. {dashboardStore.userToken.firstName+" "+dashboardStore.userToken.lastName}</Heading>
             <View style={{width:'80%',height:1,backgroundColor:'grey',marginLeft:'10%'}}>
             </View>
             <View style={{flexDirection:'row'}}>
@@ -81,7 +79,7 @@ async function closeHandler() {
   }} />
   <View style={{flexDirection:'column'}}>
 
-  <Heading style={{color:'#1E5128',fontSize:16,marginLeft:15,marginTop:15}}>Patient Name : <Text style={{color:'#4E9F3D'}}>{dashboardStore.FullViewAppData.Consumer_Name.toUpperCase()}</Text> 
+  <Heading style={{color:'#1E5128',fontSize:16,marginLeft:15,marginTop:15}}>Patient Name : <Text style={{color:'blue'}}>{dashboardStore.FullViewAppData.Consumer_Name.toUpperCase()}</Text> 
   </Heading>
   
   <Heading style={{color:'#1E5128',fontSize:16,marginLeft:10}}> Time: From <Text style={{color:'#332FD0'}}>{ dashboardStore.FullViewAppData.TimeFrom}</Text> <Icon style={{color:'#332FD0'}} name ="md-time-outline"/>  TO   <Text style={{color:'#332FD0'}}>{ dashboardStore.FullViewAppData.TimeTo}</Text> <Icon  name ="md-time-outline" style={{color:'#332FD0'}}/> </Heading>
@@ -90,7 +88,7 @@ async function closeHandler() {
   <View style={{width:'50%',marginLeft:'25%',height:1,backgroundColor:'grey',marginTop:20}}>
   </View>
   <View style={{flexDirection:'row',marginTop:20}}>
-<Heading style={{marginLeft:15,color:'#4E9F3D',marginRight:25,fontSize:18}}>Services :</Heading>
+<Heading style={{marginLeft:15,color:'#1E5128',marginRight:25,fontSize:18}}>Services :</Heading>
 <View style={{flexDirection:'column'}}>
   {dashboardStore.FullViewAppData.services.map((item,index)=><Text ><Text >{index +1}.<Text style={{fontSize:.1}}>a</Text></Text>  {item.Services_name}</Text>)}
 </View>
@@ -98,8 +96,8 @@ async function closeHandler() {
 <View style={{width:'80%',marginLeft:'10%',height:1,backgroundColor:'grey',marginTop:20}}>
   </View>
        <View style={{flexDirection:'row',marginTop:8,marginBottom:20}}>
-        <Heading style={{marginLeft:15,color:'#4E9F3D',marginRight:25,fontSize:16}}><Icon style={{color:'#4E9F3D',fontSize:16}} name ="md-grid-outline"/> Status : <Text  style={{color:'#332FD0',fontSize:14 }}>{AppStatus}</Text></Heading>
-        <Heading style={{marginLeft:15,color:'#4E9F3D',marginRight:25,fontSize:16}}><Icon style={{color:'#4E9F3D',fontSize:16}} name ="md-git-compare"/> Type : <Text  style={{color:'#332FD0',fontSize:14 }}>{dashboardStore.FullViewAppData.Appointments_Type} </Text></Heading>
+        <Heading style={{marginLeft:15,color:'#1E5128',marginRight:25,fontSize:16}}><Icon style={{color:'#4E9F3D',fontSize:16}} name ="md-grid-outline"/> Status : <Text  style={{color:'#332FD0',fontSize:14 }}>{AppStatus}</Text></Heading>
+        <Heading style={{marginLeft:15,color:'#1E5128',marginRight:25,fontSize:16}}><Icon style={{color:'#4E9F3D',fontSize:16}} name ="md-git-compare"/> Type : <Text  style={{color:'#332FD0',fontSize:14 }}>{dashboardStore.FullViewAppData.Appointments_Type} </Text></Heading>
        </View>
 {  cancelAppSection &&     <View style={{borderColor:'#F55353',width:'90%',borderWidth:1,marginLeft:'5%',marginBottom:20}}>
         <View style={{flexDirection:'row'}}>
