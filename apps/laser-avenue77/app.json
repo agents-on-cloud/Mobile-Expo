@@ -4,9 +4,9 @@
     "slug": "laser-avenue77",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/laser.png",
+    "icon": "./assets/finallogo.png",
     "splash": {
-      "image": "./assets/laser.png",
+      "image": "./assets/finallogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,8 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.laserAvenue77",
-      "permissions":[ "READ_CALENDAR ","WRITE_CALENDAR" ]  
+      "package": "com.laserAvenue77"
+     
   },
    
     "web": {
