@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import {changeShowMenuFlag77} from '../store-dashboard'
 import Icon from '@expo/vector-icons/FontAwesome';
+import {statusModalHandler} from '../store-dashboard'
 
 function Tasks({navigation}){
 const images = new Array(6).fill('https://images.unsplash.com/photo-1556740749-887f6717d7e4');
@@ -18,13 +19,13 @@ const [carouselItems, setCarouselItems] = useState([""]);
 const [ActiveSlide, setActiveSlide] = useState(0);
 const [taskItem, setTaskItem] = useState({});
 const [toodayDate, setTodayDate] = useState();
-const [deleteFlag, setDeleteFlag] = useState(false);
+const [newStatus, setNewStatus] = useState();
 const [priority, setPriority] = useState(['',"#FF5D5D","#FF8D29","#8CC0DE"]);
 
 useFocusEffect(
   React.useCallback(() => {
     getUsers()
-  }, [deleteFlag])
+  }, [dashboardStore.updateData])
 );
 
 function menueHandler(item) {
@@ -32,24 +33,8 @@ function menueHandler(item) {
   setTaskItem(item)
 }
 
-async function deleteHadnler() {
-  try {
-    await axios(requestBuilder('tasks','/tasks/deleteTask/:id','delete ',{"id":taskItem.task_id}))
-    setDeleteFlag(!deleteFlag)
-    dispatch(changeShowMenuFlag77())
-  } catch (error) {
-    console.log('errorerror',error);
-  }
- 
-}
-async function ClaimHandler() {
-  try {
-    await axios(requestBuilder('tasks','/tasks/task/claimme/:id ','put', {id:taskItem.task_id, userId:dashboardStore.userToken.userId})).then(results=>console.log('99999999999',results.data))
-    setDeleteFlag(!deleteFlag)
-    dispatch(changeShowMenuFlag77())
-  } catch (error) {
-    console.log('errorerror',error);
-  }
+async function changeStatus(task) {
+  dispatch(statusModalHandler(task))
 }
 
     const getUsers = async () => {
@@ -66,7 +51,8 @@ async function ClaimHandler() {
            if (results.data[i].due_date===ddd) {
             dayTasks.push(results.data[i])
            } }
-           setCarouselItems([...carouselItems,...dayTasks])
+           setCarouselItems(["",...dayTasks])
+           console.log("carouselItemscarouselItems",carouselItems);
            })
            } catch (error) {
              console.log((error.message));
@@ -81,10 +67,7 @@ const goTask = id => {
     type:'assigned',
   });
 };
-function SetReminder() {
-  setTimeout(() => {
-    
-  }, timeout);}
+
 
       const ref = useRef(null);
       const renderItem = useCallback(({ item, index }) => (
@@ -132,7 +115,7 @@ function SetReminder() {
           return (
           <View  >
             {/* onPress={()=>navigation.navigate} */}
-          {imageIndex !==0 && <Pressable onPress={()=>goTask(item.task_id)}   onLongPress={()=>menueHandler(item)} delayLongPress={3000} >
+          {imageIndex !==0 && <Pressable onPress={()=>goTask(item.task_id)}   onLongPress={()=>changeStatus(item)} delayLongPress={1000} >
           <HStack w={300}  style={{ borderRightWidth:40 ,borderRightColor:priority[item.priority], borderBottomColor:'#06919D' , borderTopColor:'#06919D', borderLeftColor:'#06919D',borderRadius:13, height: 80, padding: 10 ,backgroundColor:"#DEEDF0",width:320,height:70,backgroundColor:'#FFF6EA',borderRadius:10,shadowColor: "#000",
           shadowOffset: {
           width: 5,
@@ -142,8 +125,11 @@ function SetReminder() {
       shadowRadius: 16.00,
       elevation: 20,marginLeft:20,marginRight:20}} >
        <VStack space={1}>
-       <Text style={{ fontSize: 20,color:'#06919D' }}>{item.subject}</Text>
-       <Text style={{fontSize: 12, color:'#06919D' }}> Due Time: {item.due_time} {" "}<Icon name="clock-o"/> </Text>
+       <Heading style={{ fontSize: 20,color:'#06919D' }}>{item.subject}</Heading>
+       <HStack><Text style={{fontSize: 12, color:'#06919D' }}> Due Time: {item.due_time} {" "}<Icon name="clock-o"/> </Text>
+       <Text style={{fontSize:13, color:'#06919D',marginLeft:"10%"}}> <Icon style={{fontSize:13, color:'#06919D'}} name="tags" /> Status :</Text>
+       <Text style={{fontSize:13, color:'#06919D'}}> {item.status}</Text>
+       </HStack>
        </VStack>
        </HStack>  
        </Pressable>}
@@ -185,11 +171,10 @@ function SetReminder() {
       <HStack space={3} justifyContent="center" >
       </HStack >
       {dashboardStore.ShowMenuFlag77 && <View style={{position:"absolute",top:120,left:"40%",zIndex:10}}>
-      <View style={{backgroundColor:'#FAFAF6',height:108}}>
+      <View >
       <Box h="9" w="150" alignItems="flex-start">
-      <Button onPress={()=>ClaimHandler()}  style={{borderWidth:.5,borderColor:'white'}} h="10" w="100%">Claim      </Button>
-      <Button onPress={()=>deleteHadnler()} style={{borderWidth:.5,borderColor:'white'}} h="10" w="100%">Delete     </Button>
-      <Button onPress={()=>SetReminder()}   style={{borderWidth:.5,borderColor:'white'}} h="10" w="100%">Set Reminder </Button>
+  
+    
       </Box>
       </View>
       </View>}

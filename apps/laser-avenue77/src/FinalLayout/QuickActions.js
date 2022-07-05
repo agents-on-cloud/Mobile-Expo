@@ -19,7 +19,7 @@ return(
     }} animate={{
       opacity: 1,
       transition: {
-      duration: 500
+      duration: 200
       }
     }}>
   <IconButton onPress={ ()=> {navigation.navigate('HrProvider')

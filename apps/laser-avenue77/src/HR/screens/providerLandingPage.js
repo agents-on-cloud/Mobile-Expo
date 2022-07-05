@@ -9,6 +9,8 @@ import {dueDateHandler} from '../../HR/store-Hr'
 import { useFocusEffect } from '@react-navigation/native';
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
+import * as Permissions from 'expo-permissions';
+
 const LOCATION_TASK_NAME = "geofencing-location-task";
 function Hr({navigation}) {
   const [test,setTest]=useState('')
@@ -22,12 +24,35 @@ function Hr({navigation}) {
   const hrStore = useSelector(state => state.hrStore);
   const [coordinates,setCoordinates]=useState({})
   const dispatch = useDispatch();
-  const region: Location.LocationRegion = {
-    identifier: "1",
-    latitude: 31.971192708378638,
-    longitude: 35.835082484470185,
-    radius: 30,
-  };
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+      setInterval(async () => {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+        console.log('zzzzzzzzzzzzzzzzzzzz',location);
+      }, 5000);
+
+   
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+
   useFocusEffect(
   React.useCallback(() => {
    
@@ -42,17 +67,30 @@ getCuurentLocation()
     }, []));
 
    async function getCuurentLocation() {
-setInterval(async () => {
-  let location = await Location.getCurrentPositionAsync({});
-  console.log('setCoordinatessetCoordinates',location);
-  setCoordinates(location.coords);
-  
-}, 5000);
+    console.log('1111111111');
+    try {
+      await Permissions.askAsync(Permissions.LOCATION);
+      let location = await Location.getCurrentPositionAsync({}).then(results=>console.log('aaaaaaaaaa',results))
+      console.log('setCoordinatessetCoordinates',location);
+      setCoordinates(location.coords);
+      
+    } catch (error) {
+      console.log('eeeeeeeeee',error);
+    }
+// setInterval(async () => {
+
+// }, 5000);
 
 
 
       
     }
+
+    setInterval(async () => {
+      let location = await Location.getCurrentPositionAsync({});
+      console.log('setCoordinatessetCoordinates',location);
+      setCoordinates(location.coords);
+    }, 5000);
 
     const requestPermissions = async () => {
       const { status } = await Location.requestBackgroundPermissionsAsync();

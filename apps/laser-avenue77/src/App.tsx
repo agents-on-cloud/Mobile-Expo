@@ -127,7 +127,7 @@ const Stack = createNativeStackNavigator();
  <Text >Notifications</Text>
  </TouchableOpacity>
  </View>
- <View style={{width:'80%',height:1,backgroundColor:'grey',margin:15}}></View>
+ <View style={{width:'80%',height:.8,backgroundColor:'grey',margin:15}}></View>
  <View >
  <TouchableOpacity onPress={() => {console.log('ppppp');
  
