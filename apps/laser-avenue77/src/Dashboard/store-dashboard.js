@@ -17,7 +17,10 @@ export const dashboard=createSlice({
         FullViewAppData:{},
         FullViewAppFlag:false,
         providerId:'',
-        employeeId:''
+        employeeId:'',
+        statusModal:false,
+        taskStatus:{},
+        updateData:false
     },
     reducers:{
     increment:(state,action)=>{
@@ -60,8 +63,18 @@ export const dashboard=createSlice({
              saveProviderId:(state,action)=>{
                 state.providerId= action.payload.providerUuid
                 console.log(' state.providerId state.providerId', state.providerId);
-             }
+             },
+             statusModalHandler:(state,actions)=>{
+                console.log('actionsactionsactions',actions.payload);
+                state.taskStatus= actions.payload
+                state.statusModal= true
+             },
+             SaveModalHandler:(state,actions)=>{
+                
+                state.statusModal= false
+                state.updateData=!state.updateData
+             },
     }
 })
-export const {increment,saveToken,changeShowMenuFlag77,closeMenue,notificationModalHandler,closeModalHandler,modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler,FullViewCloseHandler,saveProviderId} =dashboard.actions
+export const {increment,saveToken,changeShowMenuFlag77,closeMenue,notificationModalHandler,closeModalHandler,modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler,FullViewCloseHandler,saveProviderId,statusModalHandler,SaveModalHandler} =dashboard.actions
 export default dashboard.reducer 

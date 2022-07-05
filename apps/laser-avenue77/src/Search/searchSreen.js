@@ -257,7 +257,7 @@ function AvatarType(payload) {
   <Box  alignItems="center"  >
   <TouchableHighlight  underlayColor={'#AAA'} onPress={()=>handleRecentSearches(item)}>
 
-     <Box  w="320" mt="10" borderWidth="1" borderColor={'grey'} shadow="3" bg={"coolGray.100"}  rounded="8" >
+     <Box  w="350" mt="10" borderWidth="1" borderColor={'grey'} shadow="3" bg={"coolGray.100"}  rounded="8" >
         <Heading bold style={{position:'absolute',top:15,left:"50%",color:'#1E5128',fontSize:18}}>{item.type.toUpperCase()}</Heading>
         <Avatar style={{position:'absolute',top:5,left:"30%"}} size="48px" source={{
       uri: AvatarType(item.type)

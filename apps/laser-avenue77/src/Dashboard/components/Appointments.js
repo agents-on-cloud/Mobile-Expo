@@ -8,12 +8,16 @@ import Icon from '@expo/vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import {modalVisibleHandler,AdditionalAppointmentDataHandler,fullViewAppHandler} from '../store-dashboard'
+
 function Appointment({navigation}) {
   const dashboardStore = useSelector(state => state.dashboard);
+  const hrStore = useSelector(state => state.hrStore);
   const dispatch = useDispatch();
   const [appointmentData,setAppointmentData] =useState([])
     useFocusEffect(
+     
       React.useCallback(() => {
+        console.log('dashboardStoredashboardStore',dashboardStore.providerId)
         getAppointments()
       }, [])
     );
@@ -21,6 +25,14 @@ function Appointment({navigation}) {
       React.useCallback(() => {
         getAppointments()
       }, [dashboardStore.FullViewAppFlag])
+    );
+    useFocusEffect(
+     
+      React.useCallback(() => {
+        console.log('dashboardStoredashboardStore',dashboardStore.providerId)
+        console.log('dashboardStoredashboardStore',hrStore.dueDate)
+    
+      }, [])
     );
     function AddPriorityColor(payload) {
       if (payload=="low") {
@@ -39,7 +51,7 @@ async function getAppointments() {
 await axios(requestBuilder( "appointments", "/appointments","get",
           {
             id: "087a5c8-7bf9-4ce9-af24-958465fa380a",
-            date:"2022-01-22"
+            date:hrStore.dueDate
           }
         )
       ).then((results)=>{
@@ -55,12 +67,8 @@ await axios(requestBuilder( "appointments", "/appointments","get",
           let TimefromParsed= appointmentData[i].TimeFrom[0]+appointmentData[i].TimeFrom[1]+'.'+appointmentData[i].TimeFrom[3]+appointmentData[i].TimeFrom[4]
           appointmentData[i].TimefromParsed=parseFloat(TimefromParsed) 
           console.log('mmmmmmmmmm');
-        }
-        
-     
-       }
+        }}
 
-  
        let sortedData= appointmentData.sort(function(a, b){return a.TimefromParsed - b.TimefromParsed})
        console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiii',sortedData);
        setAppointmentData(sortedData)

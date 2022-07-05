@@ -44,6 +44,8 @@
           ]
         }
       ]
-    ]
+    ],
+    "permissions":["WRITE_CALENDAR","READ_CALENDAR"] 
+    
   }
 }

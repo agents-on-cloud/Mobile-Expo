@@ -107,7 +107,7 @@ async function closeHandler() {
         numberOfLines={1}
         onChangeText={text => onChangeRequestedBy(text)}
         value={RequestedBy}
-        style={{borderColor:'#F55353',borderWidth:1,width:'60%',marginTop:10,borderRadius:5}}
+        style={{borderColor:'#F55353',borderWidth:1,width:'60%',marginTop:10,borderRadius:5,padding:5}}
       />
     </View>
     <View style={{flexDirection:'row'}}>

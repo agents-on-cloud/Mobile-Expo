@@ -16,6 +16,7 @@ import FullViewApp from './components/FullViewApp'
 import axios from 'axios'
 import requestRebuilder from '../requestRebuilder  '
 import {dueDateHandler} from '../HR/store-Hr'
+import ChangeStatusModal from './components/ChangeStatusModal'
 
 function Dashboard({navigation}) {
   const dashboardStore = useSelector(state => state.dashboard);
@@ -78,6 +79,7 @@ function closeALLmodals() {
         </ScrollView  >
        {dashboardStore.modalVisible && <AppontmentModal  />}
        {dashboardStore.FullViewAppFlag && <FullViewApp  />}
+       <ChangeStatusModal/>
         </View>
     );};
   const styles = StyleSheet.create({
