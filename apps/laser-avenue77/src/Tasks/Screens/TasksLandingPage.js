@@ -33,7 +33,6 @@ export default function TasksLandingPage({ navigation }) {
 
   const dispatch = useDispatch();
 
-  ////////
   const state = useSelector((state) => {
     return {
       token: state.tasks.token,
@@ -45,7 +44,6 @@ export default function TasksLandingPage({ navigation }) {
       userToken: state.dashboard.userToken,
     };
   });
-  ///////  userId   ////    firstName    ///   lastName
 
   useEffect(() => {
     if (state.user_id) {
@@ -355,7 +353,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginBottom:150
+    marginBottom: 150,
   },
   tabs: {
     marginTop: 10,
@@ -381,7 +379,6 @@ const style = StyleSheet.create({
   },
 
   filter: {
-    marginLeft: 5,
     marginLeft: 5,
     marginTop: 5,
     paddingTop: 5,

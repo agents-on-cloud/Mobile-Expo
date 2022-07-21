@@ -10,6 +10,7 @@ import {
   Modal,
   Pressable,
   LogBox,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeleteTask } from '../store-tasks';
@@ -116,7 +117,9 @@ export default function TaskFullView({ route, navigation }) {
         });
       });
       setUsers(arr);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const claimeTask = async () => {
@@ -325,6 +328,10 @@ export default function TaskFullView({ route, navigation }) {
       console.log('error handleReassigne ', error.message);
     }
   };
+
+  function handleBackButtonClick() {
+    setStatusModalVisible(false);
+  }
 
   return (
     <ScrollView>
@@ -604,43 +611,48 @@ export default function TaskFullView({ route, navigation }) {
               </View>
             </View>
           </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={statusModalVisible}
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            Press={() => handleBackButtonClick()}
           >
-            <View style={style.centeredView2}>
-              <View style={style.modalViewStatus}>
-                <View style={style.button_con}>
-                  <Pressable style={style.button} onPress={changeStatus}>
-                    <Text style={style.textStyle}>Save</Text>
-                  </Pressable>
-                </View>
-                <View style={{ padding: 10 }}>
-                  <RadioButton.Group
-                    onValueChange={(value) => setChecked(value)}
-                    value={checked}
-                  >
-                    <RadioButton.Item
-                      label="on hold"
-                      value="on hold"
-                      style={style.radio}
-                    />
-                    <RadioButton.Item
-                      label="progress"
-                      value="progress"
-                      style={style.radio}
-                    />
-                    <RadioButton.Item
-                      label="completed"
-                      value="completed"
-                      style={style.radio}
-                    />
-                  </RadioButton.Group>
+            <Modal
+              animationType="slide"
+              visible={statusModalVisible}
+              transparent={true}
+            >
+              <View style={style.centeredView2}>
+                <View style={style.modalViewStatus}>
+                  <View style={style.button_con}>
+                    <Pressable style={style.button} onPress={changeStatus}>
+                      <Text style={style.textStyle}>Save</Text>
+                    </Pressable>
+                  </View>
+                  <View style={{ padding: 10 }}>
+                    <RadioButton.Group
+                      onValueChange={(value) => setChecked(value)}
+                      value={checked}
+                    >
+                      <RadioButton.Item
+                        label="on hold"
+                        value="on hold"
+                        style={style.radio}
+                      />
+                      <RadioButton.Item
+                        label="progress"
+                        value="progress"
+                        style={style.radio}
+                      />
+                      <RadioButton.Item
+                        label="completed"
+                        value="completed"
+                        style={style.radio}
+                      />
+                    </RadioButton.Group>
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
+            </Modal>
+          </TouchableOpacity>
         </View>
       ) : null}
     </ScrollView>
