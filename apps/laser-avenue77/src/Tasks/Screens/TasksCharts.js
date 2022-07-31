@@ -44,7 +44,7 @@ const MyPieChart = ({ values }) => {
             legendFontSize: 15,
           },
         ]}
-        width={Dimensions.get('window').width - 16}
+        width={Dimensions.get('window').width}
         height={220}
         chartConfig={{
           backgroundColor: '#1cc910',
@@ -59,7 +59,7 @@ const MyPieChart = ({ values }) => {
         style={{
           marginVertical: 4,
           borderRadius: 16,
-          marginLeft: '12%',
+          marginLeft: '9%',
         }}
         accessor="population"
         paddingLeft="15"
@@ -195,7 +195,7 @@ export default function TasksCharts({ navigation }) {
             completed && Math.trunc((completed / state.tasks.length) * 10) / 10,
         });
       }
-    }, [])
+    }, [state.tasks])
   );
   //   useEffect(() => {
   //     dispatch(getAllTasks());
@@ -255,11 +255,13 @@ export default function TasksCharts({ navigation }) {
         </View>
 
         <View style={style.pie}>
-          <View style={style.count}>
-            <Text style={{ textAlign: 'center', fontSize: 22 }}>
-              {state.tasks.length} tasks
-            </Text>
-            <Text style={{ textAlign: 'center' }}>Assigned</Text>
+          <View style={style.countCont}>
+            <View style={style.count}>
+              <Text style={{ textAlign: 'center', fontSize: 22 }}>
+                {state.tasks.length} tasks
+              </Text>
+              <Text style={{ textAlign: 'center' }}>Assigned</Text>
+            </View>
           </View>
           {state.tasks && <MyPieChart values={priority} />}
         </View>
@@ -283,17 +285,28 @@ const style = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     padding: 16,
-    marginTop: 16,
   },
   pie: {
     position: 'relative',
+    marginTop: '-5%',
+  },
+  countCont: {
+    width: '100%',
+    height: 140,
+    position: 'absolute',
+    top: '36.5%',
+    borderRadius: 100,
+    zIndex: 1,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   count: {
     width: 140,
     height: 140,
     position: 'absolute',
-    top: '39%',
-    left: '20.6%',
+    right: '43%',
     borderRadius: 100,
     backgroundColor: 'white',
     zIndex: 1,
@@ -304,7 +317,7 @@ const style = StyleSheet.create({
 
   tabView: {
     marginHorizontal: 120,
-    marginVertical: 50,
+    marginVertical: 40,
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#04b9a7',

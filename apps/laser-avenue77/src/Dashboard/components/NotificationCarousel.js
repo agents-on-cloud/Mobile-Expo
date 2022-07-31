@@ -13,6 +13,7 @@ import {
   PanResponder,
 } from 'react-native';
 import Icon from '@expo/vector-icons/Fontisto';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  ';
@@ -23,6 +24,7 @@ const NotificationCarousel = () => {
     { notification_subject: '', createdAt: '', sender_name: '' },
   ]);
   const [deleteFlag, setDeleteFlag] = useState(false);
+  const [delIcon, setdelIcon] = useState('arrow-down-bold');
   const dispatch = useDispatch();
   const dashboardStore = useSelector((state) => state.dashboard);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -39,6 +41,7 @@ const NotificationCarousel = () => {
           x: pan.x._value,
           y: pan.y._value,
         });
+        setdelIcon('delete');
       },
       onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
       onPanResponderRelease: (e, gesture) => {
@@ -48,6 +51,7 @@ const NotificationCarousel = () => {
         }).start();
 
         pan.y._value > 180 ? (del.current = true) : (del.current = false);
+        setdelIcon('arrow-down-bold');
       },
       // onPanResponderRelease: () => {
       //   //pan.flattenOffset();
@@ -144,14 +148,12 @@ const NotificationCarousel = () => {
                         <View style={{ flexDirection: 'row' }}>
                           <Image
                             style={styles.tinyLogo}
-                            // source={{
-                            //   uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
-                            // }}
-
                             source={
                               item.sender_image
                                 ? { uri: item.sender_image }
-                                : require('../../../assets/user.png')
+                                : {
+                                    uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
+                                  }
                             }
                           />
                           {
@@ -160,11 +162,35 @@ const NotificationCarousel = () => {
                               {item.sender_name.toUpperCase()}
                             </Text>
                           }
+                          <Pressable
+                            style={{
+                              position: 'absolute',
+                              right: 8,
+                              bottom: -5,
+                              borderWidth: 3,
+                              borderRadius: 50,
+                              borderColor:
+                                delIcon === 'arrow-down-bold'
+                                  ? 'black'
+                                  : 'tomato',
+                            }}
+                          >
+                            <MaterialCommunityIcons
+                              name={delIcon}
+                              size={18}
+                              color={
+                                delIcon === 'arrow-down-bold'
+                                  ? 'black'
+                                  : 'tomato'
+                              }
+                            />
+                          </Pressable>
+
                           <Text
                             style={{
                               position: 'absolute',
                               right: 0,
-                              bottom: 0,
+                              top: 0,
                               color: '#11567C',
                             }}
                           >
@@ -293,6 +319,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 5,
   },
   scrollContainer: {
     height: 110,

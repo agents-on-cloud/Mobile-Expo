@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Text,
   View,
-  SafeAreaView,
   ScrollView,
   Pressable,
   ImageBackground,
@@ -11,8 +10,8 @@ import {
   StyleSheet,
   Alert,
   Animated,
-  TouchableWithoutFeedback,
 } from 'react-native';
+import Icon from '@expo/vector-icons/Fontisto';
 import Tasks from '../Dashboard/components/Tasks.js';
 import Appointment from '../Dashboard/components/Appointments.js';
 import Billing from '../Dashboard/components/Billing.js';
@@ -33,11 +32,20 @@ import axios from 'axios';
 import requestRebuilder from '../requestRebuilder  ';
 import { dueDateHandler } from '../HR/store-Hr';
 import ChangeStatusModal from './components/ChangeStatusModal';
+import { Button } from 'native-base';
 
 function Dashboard({ navigation }) {
   const dashboardStore = useSelector((state) => state.dashboard);
   const dispatch = useDispatch();
   const [x, setx] = useState(500);
+  const [announcemnt, setannouncemnt] = useState([
+    { id: 1, announcemnt: 'Announcemt 1' },
+    { id: 2, announcemnt: 'Announcemt 2' },
+    { id: 3, announcemnt: 'Announcemt 3' },
+    { id: 4, announcemnt: 'Announcemt 4' },
+    { id: 5, announcemnt: 'Announcemt 5' },
+    { id: 6, announcemnt: 'Announcemt 6' },
+  ]);
   const translation = useRef(new Animated.Value(x)).current;
 
   useEffect(() => {
@@ -45,12 +53,12 @@ function Dashboard({ navigation }) {
       Animated.sequence([
         Animated.timing(translation, {
           toValue: x * -1,
-          duration: 20000,
+          duration: 25000,
           useNativeDriver: true,
         }),
         Animated.timing(translation, {
           toValue: x,
-          duration: 20000,
+          duration: 25000,
           useNativeDriver: true,
         }),
       ])
@@ -101,6 +109,10 @@ function Dashboard({ navigation }) {
     dispatch(closeMenue());
     dispatch(closeModalHandler());
   }
+
+  function deleteAnnounc(announc) {
+    setannouncemnt(announcemnt.filter((i) => i.id !== announc.id));
+  }
   return (
     <View style={{ paddingBottom: '6%' }}>
       <ScrollView>
@@ -118,13 +130,20 @@ function Dashboard({ navigation }) {
                   { transform: [{ translateX: translation }] },
                 ]}
               >
-                <Text style={styles.announcTxt}>Announcemnt 1</Text>
-                <Text style={styles.announcTxt}>Announcemnt 2</Text>
-                <Text style={styles.announcTxt}>Announcemnt 3</Text>
-                <Text style={styles.announcTxt}>Announcemnt 3</Text>
-                <Text style={styles.announcTxt}>Announcemnt 3</Text>
-                <Text style={styles.announcTxt}>Announcemnt 3</Text>
-                <Text style={styles.announcTxt}>Announcemnt 3</Text>
+                {announcemnt.length > 0 &&
+                  announcemnt.map((announc) => (
+                    <Text style={styles.announcTxt}>
+                      {announc.announcemnt}
+                      {'   '}
+                      <Icon
+                        onPress={() => deleteAnnounc(announc)}
+                        name="close"
+                        style={{
+                          fontSize: 15,
+                        }}
+                      />
+                    </Text>
+                  ))}
               </Animated.View>
             </View>
             <Tasks navigation={navigation} />
@@ -172,7 +191,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '10%',
     flex: 1,
-    backgroundColor: 'lightgray',
   },
   announcSweep: {
     flex: 1,
@@ -181,6 +199,13 @@ const styles = StyleSheet.create({
   },
   announcTxt: {
     marginHorizontal: 5,
+    backgroundColor: 'lightgray',
+    borderRadius: 30,
+    padding: 2,
+    paddingHorizontal: 5,
+    marginTop: 2,
+    alignItems: 'center',
+    paddingRight: 10,
   },
 });
 

@@ -29,6 +29,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeShowMenuFlag77 } from '../store-dashboard';
 import Icon from '@expo/vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { statusModalHandler } from '../store-dashboard';
 import { setDeleteTask } from '../../Tasks/store-tasks';
 
@@ -51,6 +52,7 @@ function Tasks({ navigation }) {
     '#FF8D29',
     '#8CC0DE',
   ]);
+  const [delIcon, setdelIcon] = useState('arrow-down-bold');
 
   const pan = useRef(new Animated.ValueXY()).current;
   //const del = useRef(false);
@@ -64,6 +66,7 @@ function Tasks({ navigation }) {
           x: pan.x._value,
           y: pan.y._value,
         });
+        setdelIcon('delete');
       },
       onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
       onPanResponderRelease: (e, gesture) => {
@@ -73,6 +76,7 @@ function Tasks({ navigation }) {
         }).start();
 
         pan.y._value > 180 ? (del.current = true) : (del.current = false);
+        setdelIcon('arrow-down-bold');
       },
       // onPanResponderRelease: () => {
       //   //pan.flattenOffset();
@@ -211,7 +215,8 @@ function Tasks({ navigation }) {
           flex: 1,
           flexDirection: 'row',
           justifyContent: 'center',
-          marginTop: 80,
+          marginTop: 42,
+          marginBottom: -12,
         }}
       >
         <SafeAreaView style={styles.container}>
@@ -255,10 +260,7 @@ function Tasks({ navigation }) {
                               borderBottomColor: '#06919D',
                               borderTopColor: '#06919D',
                               borderLeftColor: '#06919D',
-                              borderRadius: 13,
-                              height: 80,
                               padding: 10,
-                              backgroundColor: '#DEEDF0',
                               width: 320,
                               height: 70,
                               backgroundColor: '#FFF6EA',
@@ -271,8 +273,8 @@ function Tasks({ navigation }) {
                               shadowOpacity: 0.8,
                               shadowRadius: 16.0,
                               elevation: 20,
-                              marginLeft: 20,
-                              marginRight: 20,
+                              marginLeft: 12,
+                              marginRight: 9,
                             }}
                           >
                             <VStack space={1}>
@@ -309,6 +311,29 @@ function Tasks({ navigation }) {
                                   {' '}
                                   {item.status}
                                 </Text>
+                                <Pressable
+                                  style={{
+                                    position: 'absolute',
+                                    right: -30,
+                                    bottom: -2,
+                                    borderWidth: 3,
+                                    borderRadius: 50,
+                                    borderColor:
+                                      delIcon === 'arrow-down-bold'
+                                        ? 'black'
+                                        : 'tomato',
+                                  }}
+                                >
+                                  <MaterialCommunityIcons
+                                    name={delIcon}
+                                    size={18}
+                                    color={
+                                      delIcon === 'arrow-down-bold'
+                                        ? 'black'
+                                        : 'tomato'
+                                    }
+                                  />
+                                </Pressable>
                               </HStack>
                             </VStack>
                           </HStack>

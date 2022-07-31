@@ -217,7 +217,7 @@ export default function TasksLandingPage({ navigation }) {
             </View>
           </TouchableOpacity>
         </View> */}
-        <View style={style.tabs}>
+        <ScrollView style={style.tabs} horizontal={true}>
           <TouchableOpacity
             style={
               selectedCategory === 'assigned'
@@ -260,7 +260,21 @@ export default function TasksLandingPage({ navigation }) {
               <Text style={style.tabText}> Created by me </Text>
             </View>
           </TouchableOpacity>
-        </View>
+          <TouchableOpacity
+            style={
+              selectedCategory === 'scheduled'
+                ? [style.tabView, style.activeTab]
+                : style.tabView
+            }
+            onPress={() => {
+              changeTab('scheduled');
+            }}
+          >
+            <View style={style.tab}>
+              <Text style={style.tabText}> Scheduled </Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
         <View style={style.title}>
           <Text> number of tasks is : {state.tasks.length} </Text>
           <View style={style.icons}>
@@ -359,6 +373,8 @@ const style = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   tabView: {
     marginRight: 5,

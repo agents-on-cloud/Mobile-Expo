@@ -6,16 +6,22 @@ import MarketingLandingPage from './Marketing/Screens/MarketingLandingPage';
 import MainLandiingPage from './Layout/LandingPage'
 import BillingLandingPage from './Billing/Screens/BillingLandingPage'
 import ConsumersLandingPage from './Consumers/Screens/ConsumersLandingPage'
+import ConsumersFullView from './Consumers/Screens/ConsumerFullView'
 import FacilitiesLandingPage from './Facilities/Screens/FacilitiesLandingPage'
 import IncidentLandingPage from './Incidient/Screens/IncidentLandingPage'
 import InventoryLandingPage from './Inventory/Screens/InventoryLandingPage'
 import KnowledgeBaseLandingPage from './Knowledge-Base/Screens/KnowledgeBaseLandingPage'
 import PerformanceLandingPage from './Performance/Screens/PerformanceLandingPage'
 import ProviderLandingPage from './Provider/Screens/ProviderLandingPage'
+import ProviderFullView from './Provider/Screens/ProviderFullView'
 import ServicesLandingPage from './Services/Screens/ServicesLandingPage'
+import ServiceFullView from './Services/Screens/ServiceFullView'
 import SuppliersLandingPage from './Suppliers/Screens/SuppliersLandingPage'
 import TasksLandingPage from './Tasks/Screens/TasksLandingPage'
 import TasksCharts from './Tasks/Screens/TasksCharts'
+import RoomFullView from './Rooms/Screens/RoomFullView'
+import EquipmentFullView from './Inventory/Screens/EquipmentFullView'
+import ItemFullView from './Inventory/Screens/ItemFullView'
 import AppointmentLandingPage from './Appointment/Screens/AppointmentLandingPage'
 import Increment from './Marketing/Screens/increment'
 import Dashboard from './Dashboard/Dashboard.js'
@@ -200,13 +206,16 @@ function App() {
             <Stack.Screen name="MarketingLandingPage" component={MarketingLandingPage} />
             <Stack.Screen name="BillingLandingPage" component={BillingLandingPage} />
             <Stack.Screen name="ConsumersLandingPage" component={ConsumersLandingPage} />
+            <Stack.Screen name="ConsumerFullView" component={ConsumersFullView} />
             <Stack.Screen name="FacilitiesLandingPage" component={FacilitiesLandingPage} />
             <Stack.Screen name="IncidentLandingPage" component={IncidentLandingPage} />
             <Stack.Screen name="InventoryLandingPage" component={InventoryLandingPage} />
             <Stack.Screen name="KnowledgeBaseLandingPage" component={KnowledgeBaseLandingPage} />
             <Stack.Screen name="PerformanceLandingPage" component={PerformanceLandingPage} />
             <Stack.Screen name="ProviderLandingPage" component={ProviderLandingPage} />
+            <Stack.Screen name="ProviderFullView" component={ProviderFullView} />
             <Stack.Screen name="ServicesLandingPage" component={ServicesLandingPage} />
+            <Stack.Screen name="ServiceFullView" component={ServiceFullView} />
             <Stack.Screen name="SuppliersLandingPage" component={SuppliersLandingPage} />
             <Stack.Screen name="TasksCharts" component={TasksCharts} options={{ title: 'Tasks' }} />
             <Stack.Screen name="TasksLandingPage" component={TasksLandingPage} options={{ title: 'Tasks' }} />
@@ -214,6 +223,9 @@ function App() {
             <Stack.Screen name="calendar" component={Calendar} />
             <Stack.Screen name="searchSreen" component={SearchSreen} />
             <Stack.Screen name="AppointmentProviderLandingPage" component={AppointmentProviderLandingPage} />
+            <Stack.Screen name="RoomFullView" component={RoomFullView} />
+            <Stack.Screen name="EquipmentFullView" component={EquipmentFullView} />
+            <Stack.Screen name="ItemFullView" component={ItemFullView} />
 
             {/* /* /////////////////////Billing/////////////////////////////////////// */}
 

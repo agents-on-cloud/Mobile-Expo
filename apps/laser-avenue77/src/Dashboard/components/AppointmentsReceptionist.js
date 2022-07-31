@@ -171,7 +171,9 @@ function Appointment({ navigation }) {
                             source={
                               item.Consumer_img
                                 ? { uri: item.Consumer_img }
-                                : require('../../../assets/user.png')
+                                : {
+                                    uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
+                                  }
                             }
                           />
                           <VStack>
@@ -316,7 +318,7 @@ const styles = StyleSheet.create({
   },
   styleAppoint: {
     backgroundColor: 'white',
-    marginTop: 80,
+    marginTop: 50,
     width: '90%',
     marginLeft: '5%',
     marginBottom: 80,

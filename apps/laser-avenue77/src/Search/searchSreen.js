@@ -342,7 +342,7 @@ export default function SearchSreen({ navigation }) {
       return 'https://cdn-icons-png.flaticon.com/512/489/489405.png';
     }
     if (payload.toLowerCase() == 'provider') {
-      return 'https://cdn-icons.flaticon.com/png/512/4326/premium/4326511.png?token=exp=1656836180~hmac=8282c2ac08151ee1848406b4b9e55580';
+      return 'https://cdn-icons-png.flaticon.com/512/387/387561.png';
     }
     if (payload.toLowerCase() == 'consumer') {
       return 'https://cdn-icons-png.flaticon.com/512/2760/2760970.png';
@@ -366,15 +366,45 @@ export default function SearchSreen({ navigation }) {
       dispatch(isQuickActionsOpenHandler());
   }
 
+  function navigate(item) {
+    switch (item.type.toUpperCase()) {
+      case 'PROVIDER':
+        navigation.navigate('ProviderFullView', { item });
+        break;
+      case 'CONSUMER':
+        navigation.navigate('ConsumerFullView', { item });
+        break;
+      case 'ROOMS':
+        navigation.navigate('RoomFullView', { item });
+        break;
+      case 'SERVICE':
+        navigation.navigate('ServiceFullView', { item });
+        break;
+      case 'EQUIPMENTS':
+        navigation.navigate('EquipmentFullView', { item });
+        break;
+      case 'ITEM':
+        navigation.navigate('ItemFullView', { item });
+        break;
+
+      case 'APPOINTMENTS':
+        navigation.navigate('AppointmentFullView', { item });
+        break;
+    }
+  }
+
   const renderItem = ({ item, index }) => (
     <Box alignItems="center">
       <TouchableHighlight
         underlayColor={'#AAA'}
-        onPress={() => handleRecentSearches(item)}
+        onPress={() => {
+          handleRecentSearches(item);
+          navigate(item);
+        }}
+        style={{ marginBottom: 10, borderRadius: 10 }}
       >
         <Box
           w="350"
-          mt="5"
           borderWidth="1"
           borderColor={'grey'}
           shadow="3"
@@ -563,7 +593,7 @@ export default function SearchSreen({ navigation }) {
   const renderHiddenItem = (data, rowMap) => (
     <HStack flex="1" pl="2">
       <Pressable
-        style={{ position: 'absolute', right: 35, top: 60, borderRadius: 10 }}
+        style={{ position: 'absolute', right: 35, top: 40, borderRadius: 10 }}
         w="70"
         h={'80%'}
         cursor="pointer"
@@ -587,7 +617,7 @@ export default function SearchSreen({ navigation }) {
       </Pressable>
 
       <Pressable
-        style={{ position: 'absolute', right: 107, top: 60, borderRadius: 10 }}
+        style={{ position: 'absolute', right: 107, top: 40, borderRadius: 10 }}
         w="70"
         h={'80%'}
         cursor="pointer"
@@ -607,7 +637,7 @@ export default function SearchSreen({ navigation }) {
       </Pressable>
 
       <Pressable
-        style={{ position: 'absolute', right: 180, top: 60, borderRadius: 10 }}
+        style={{ position: 'absolute', right: 180, top: 40, borderRadius: 10 }}
         w="70"
         h={'80%'}
         cursor="pointer"
@@ -740,6 +770,7 @@ export default function SearchSreen({ navigation }) {
           renderHiddenItem={renderHiddenItem}
           rightOpenValue={-224}
           leftOpenValue={130}
+          style={{ marginTop: 20 }}
         />
       </View>
 
@@ -771,7 +802,7 @@ export default function SearchSreen({ navigation }) {
 
             {searchStore.recentSearches.length !== 0 &&
               searchStore.recentSearches.map((item) => (
-                <Pressable>
+                <Pressable onPress={() => navigate(item)}>
                   {({ isHovered, isFocused, isPressed }) => {
                     return (
                       <View

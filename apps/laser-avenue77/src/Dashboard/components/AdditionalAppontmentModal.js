@@ -11,16 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { modalVisibleHandler, fullViewAppHandler } from '../store-dashboard';
 import Icon from '@expo/vector-icons/Ionicons';
-import {
-  Button,
-  HStack,
-  StatusBar,
-  Box,
-  Heading,
-  Avatar,
-  Center,
-  VStack,
-} from 'native-base';
+import { HStack, Box, Heading, Avatar, VStack } from 'native-base';
 
 import { useFocusEffect } from '@react-navigation/native';
 function AddPriorityColor(payload) {
@@ -132,7 +123,9 @@ const App = () => {
                           source={
                             item.Consumer_img
                               ? { uri: item.Consumer_img }
-                              : require('../../../assets/user.png')
+                              : {
+                                  uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
+                                }
                           }
                         />
                         <VStack>

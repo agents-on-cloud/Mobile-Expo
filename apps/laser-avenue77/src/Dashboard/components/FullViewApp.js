@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
@@ -13,15 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { FullViewCloseHandler } from '../store-dashboard';
 import Icon from '@expo/vector-icons/Ionicons';
-import {
-  HStack,
-  StatusBar,
-  Box,
-  Heading,
-  Avatar,
-  Center,
-  VStack,
-} from 'native-base';
+import { Heading, Avatar } from 'native-base';
 import axios from 'axios';
 import requestBuilder from '../../requestRebuilder  ';
 import { useFocusEffect } from '@react-navigation/native';
@@ -131,6 +122,7 @@ const App = () => {
         hasBackdrop={true}
         backdropColor={'black'}
         backdropOpacity={0.3}
+        transparent={true}
       >
         <View style={styles.modalView}>
           <Pressable
@@ -176,7 +168,9 @@ const App = () => {
                 source={
                   dashboardStore.FullViewAppData.Consumer_img
                     ? { uri: dashboardStore.FullViewAppData.Consumer_img }
-                    : require('../../../assets/user.png')
+                    : {
+                        uri: 'https://myupchar-banner.s3.ap-south-1.amazonaws.com/widget/avatar/doctor-avatar-female.png',
+                      }
                 }
               />
               <View style={{ flexDirection: 'column' }}>
